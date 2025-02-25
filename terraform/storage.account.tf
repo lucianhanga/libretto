@@ -16,8 +16,6 @@ output "storage_account_name" {
 # 
 resource "azurerm_storage_account" "st" {
 
-  depends_on = [ azurerm_resource_group.rg ]
-
   name                     = local.storage_account_name
   resource_group_name      = var.resource_group_name
   location                 = var.resource_group_location
