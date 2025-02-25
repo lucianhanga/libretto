@@ -37,3 +37,17 @@ resource "azurerm_role_assignment" "document_intelligence_storage_account" {
     azurerm_cognitive_account.document_intelligence
   ]
 }
+
+
+# get the endpoint and key of the cognitive service
+output "document_intelligence_endpoint" {
+  description = "The endpoint for the Document Intelligence service."
+  value = azurerm_cognitive_account.document_intelligence.endpoint
+}
+
+# get the key of the cognitive service
+output "document_intelligence_key" {
+  description = "The primary key for the Document Intelligence service."
+  value = azurerm_cognitive_account.document_intelligence.primary_access_key
+  sensitive = true
+}
