@@ -11,7 +11,6 @@ resource "azurerm_service_plan" "function_service_plan" {
 
   sku_name = "Y1"
   os_type  = "Linux"
-
 }
 
 # define the Azure Function App
@@ -31,7 +30,7 @@ resource "azurerm_linux_function_app" "api" {
   functions_extension_version = "~4"
 
   site_config {
-        application_stack {
+    application_stack {
       python_version = "3.10"
     }
   }
@@ -40,5 +39,37 @@ resource "azurerm_linux_function_app" "api" {
     FUNCTIONS_EXTENSION_VERSION = "~4"
   }
 
+  identity {
+    type = "SystemAssigned"
+  }
   depends_on = [ azurerm_storage_container.container ]
+}
+
+
+#
+# assign the identity of the function app to the storage account
+#
+resource "azurerm_role_assignment" "function_app_storage_account" {
+  scope                = azurerm_storage_account.st.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = azurerm_linux_function_app.api.identity[0].principal_id
+
+  depends_on = [
+    azurerm_storage_container.container,
+    azurerm_linux_function_app.api
+  ] 
+} 
+
+# 
+# assign the identity of the function app to the storage account to deal with the table
+# 
+resource "azurerm_role_assignment" "function_app_storage_table" {
+  scope                = azurerm_storage_account.st.id
+  role_definition_name = "Storage Table Data Contributor"
+  principal_id         = azurerm_linux_function_app.api.identity[0].principal_id
+
+  depends_on = [
+    azurerm_storage_table.table,
+    azurerm_linux_function_app.api
+  ]
 }
