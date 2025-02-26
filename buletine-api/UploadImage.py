@@ -9,8 +9,8 @@ from azure.storage.blob import BlobServiceClient
 
 upImg = func.Blueprint()
 
-# Define the storage account name and container name
-STORAGE_ACCOUNT_NAME = "blondubuiletine74dc949c"
+# Define the storage account name and container name from environment variables
+STORAGE_ACCOUNT_NAME = os.getenv("STORAGE_ACCOUNT_NAME")
 CONTAINER_NAME = "upload"
 
 @upImg.route(route="UploadImage", methods=["POST"], auth_level=func.AuthLevel.ANONYMOUS)
