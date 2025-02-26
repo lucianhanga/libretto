@@ -1,11 +1,6 @@
-#
-# generate a random suffix for the storage account
-#
-resource "random_id" "suffix" {
-  byte_length = 4  # 8 characters in hex
-}
+
 locals {
-  storage_account_name = "${var.project_name}${random_id.suffix.hex}"
+  storage_account_name = "${var.project_name}${var.subfix}"
 }
 output "storage_account_name" {
   value = local.storage_account_name
@@ -59,4 +54,9 @@ resource "azurerm_storage_table" "table" {
 
   name                 = "results"
   storage_account_name = azurerm_storage_account.st.name
+}
+
+output "storage_account_primary_web_endpoint" {
+  description = "The primary endpoint for the static website"
+  value       = azurerm_storage_account.st.primary_web_endpoint
 }

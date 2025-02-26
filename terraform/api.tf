@@ -36,20 +36,22 @@ resource "azurerm_linux_function_app" "api" {
   }
 
   app_settings = {
-    FUNCTIONS_EXTENSION_VERSION = "~4"
   }
 
   identity {
     type = "SystemAssigned"
   }
-  depends_on = [ azurerm_storage_container.container ]
+  depends_on = [ 
+    azurerm_service_plan.function_service_plan,
+    azurerm_storage_account.st 
+]
 }
 
 
 #
 # assign the identity of the function app to the storage account
 #
-resource "azurerm_role_assignment" "function_app_storage_account" {
+resource "azurerm_role_assignment" "function_app_storage_account_blob_rights" {
   scope                = azurerm_storage_account.st.id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = azurerm_linux_function_app.api.identity[0].principal_id
@@ -63,7 +65,7 @@ resource "azurerm_role_assignment" "function_app_storage_account" {
 # 
 # assign the identity of the function app to the storage account to deal with the table
 # 
-resource "azurerm_role_assignment" "function_app_storage_table" {
+resource "azurerm_role_assignment" "function_app_storage_account_table_rights" {
   scope                = azurerm_storage_account.st.id
   role_definition_name = "Storage Table Data Contributor"
   principal_id         = azurerm_linux_function_app.api.identity[0].principal_id

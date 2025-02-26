@@ -19,12 +19,6 @@ resource "azurerm_cognitive_account" "document_intelligence" {
   }
 }
 
-/*
-az resource show \
-  --ids /subscriptions/44feaee5-c984-4c09-a02f-46c7d78ad294/resourceGroups/rg-docbuletine7/providers/Microsoft.CognitiveServices/accounts/cgdocbuletine7 \
-  --query identity
-*/
-
 #
 # assign to the document intelligence the RBAC role of "Storage Blob Data Contributor" to the storage account
 # 
@@ -34,10 +28,14 @@ resource "azurerm_role_assignment" "document_intelligence_storage_account" {
   principal_id         = azurerm_cognitive_account.document_intelligence.identity[0].principal_id
 
   depends_on = [ 
+    azurerm_storage_account.st,
     azurerm_cognitive_account.document_intelligence
   ]
 }
 
+#
+#
+# 
 
 # get the endpoint and key of the cognitive service
 output "document_intelligence_endpoint" {

@@ -13,6 +13,11 @@ variable "project_name" {
   type        = string
 }
 
+variable "subfix" {
+  description = "The subfix for the resources"
+  type        = string
+}
+
 variable "client_id" {
   description = "The Client ID for the Azure Service Principal"
   type        = string
