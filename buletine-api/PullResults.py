@@ -2,11 +2,12 @@ import logging
 import azure.functions as func
 import os
 from azure.identity import DefaultAzureCredential
+from azure.data.tables import TableServiceClient
 import json
 
 pullRes = func.Blueprint()
 
-# Define the storage account name and container name from environment variables
+# Define the storage account name and table name from environment variables
 STORAGE_ACCOUNT_NAME = os.getenv("STORAGE_ACCOUNT_NAME")
 TABLE_NAME = "results"
 
@@ -33,11 +34,40 @@ def PullResults(req: func.HttpRequest) -> func.HttpResponse:
 
     logging.info(f"GUID: {guid}")
 
-    # Return an empty JSON response for now
-    return func.HttpResponse(
-        body=json.dumps({"guid": guid}),
-        status_code=200,
-        mimetype="application/json"
-    )
+    try:
+        # Use DefaultAzureCredential to authenticate with Managed Identity
+        credential = DefaultAzureCredential()
+        
+        # Create the TableServiceClient object
+        account_url = f"https://{STORAGE_ACCOUNT_NAME}.table.core.windows.net"
+        table_service_client = TableServiceClient(endpoint=account_url, credential=credential)
+        
+        # Get the table client
+        table_client = table_service_client.get_table_client(TABLE_NAME)
+        
+        # Retrieve the entity from the table
+        entity = table_client.get_entity(partition_key="results", row_key=guid)
+        
+        # Convert the entity to JSON
+        entity_json = json.dumps(entity, default=str)
+        
+        try:
+            # Delete the entity from the table
+            table_client.delete_entity(partition_key="results", row_key=guid)
+        except Exception as delete_error:
+            logging.error(f"Error deleting entity: {delete_error}")
+        
+        return func.HttpResponse(
+            body=entity_json,
+            status_code=200,
+            mimetype="application/json"
+        )
+    except Exception as e:
+        logging.error(f"Error retrieving entity: {e}")
+        return func.HttpResponse(
+            body=json.dumps({"error": "Error retrieving entity"}),
+            status_code=500,
+            mimetype="application/json"
+        )
 
 
