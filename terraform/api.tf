@@ -44,7 +44,7 @@ resource "azurerm_linux_function_app" "api" {
   depends_on = [ 
     azurerm_service_plan.function_service_plan,
     azurerm_storage_account.st 
-]
+  ]
 }
 
 
@@ -75,3 +75,49 @@ resource "azurerm_role_assignment" "function_app_storage_account_table_rights" {
     azurerm_linux_function_app.api
   ]
 }
+
+#
+# assign the identity of the function app to the cognitive service
+#
+resource "azurerm_role_assignment" "function_app_cognitive_service_rights" {
+  scope                = azurerm_cognitive_account.document_intelligence.id
+  role_definition_name = "Cognitive Services Contributor"
+  principal_id         = azurerm_linux_function_app.api.identity[0].principal_id
+
+  depends_on = [
+    azurerm_cognitive_account.document_intelligence,
+    azurerm_linux_function_app.api
+  ]
+}
+
+# Register the application in Azure AD
+resource "azuread_application" "buletine_api" {
+  display_name = "Buletine API"
+}
+
+# Create a service principal for the application
+resource "azuread_service_principal" "buletine_api_sp" {
+  client_id = azuread_application.buletine_api.client_id
+}
+
+# Create a client secret for the application
+resource "azuread_application_password" "buletine_api_secret" {
+  application_id = azuread_application.buletine_api.id
+  display_name          = "Buletine API Secret"
+  end_date              = "2025-10-10T00:00:00Z" # 1 year from now
+}
+
+# Output the client ID and secret
+output "buletine_api_client_id" {
+  value = azuread_application.buletine_api.client_id
+}
+
+output "buletine_api_client_secret" {
+  value = azuread_application_password.buletine_api_secret.value
+  sensitive = true
+}
+
+output "buletine_api_tenant_id" {
+  value = data.azurerm_client_config.current.tenant_id
+}
+
