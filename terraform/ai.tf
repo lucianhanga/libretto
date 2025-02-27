@@ -12,7 +12,7 @@ resource "azurerm_cognitive_account" "document_intelligence" {
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
   kind                = "FormRecognizer"  # Specifies the kind of Cognitive Service
-  sku_name            = "S0"              # Specifies the SKU of the Cognitive Service
+  sku_name            = "F0"              # Specifies the SKU of the Cognitive Service
 
   identity {
     type = "SystemAssigned"

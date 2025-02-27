@@ -4,7 +4,38 @@
 resource "azuread_application" "buletine_api" {
   display_name = "Buletine API"
 
+  required_resource_access {
+    resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph API
+
+    resource_access {
+      id   = "e1fe6dd8-ba31-4d61-89e7-88639da4683d"  # User.Read (Delegated)
+      type = "Scope"
+    }
+  }
+
+  api {
+    oauth2_permission_scope {
+      admin_consent_description  = "Allows the app to read the signed-in user's files."
+      admin_consent_display_name = "Read user files"
+      user_consent_description   = "Allows the app to read your files."
+      user_consent_display_name  = "Read your files"
+      value                      = "Files.Read"
+      id = "e1fe6dd8-ba31-4d61-89e7-88639da4683d"
+      type = "User"
+      enabled = true
+    }
+  }
+
 }
+
+
+# # Step 2: Set the Application ID URI using the created application ID
+# resource "azuread_application_identifier_uri" "buletine_api_uri" {
+#   application_id  = azuread_application.buletine_api.id
+#   identifier_uri  = "api://${azuread_application.buletine_api.client_id}"
+
+#   depends_on = [ azuread_application.buletine_api ]
+# }
 
 #
 # Create a service principal for the application
@@ -14,6 +45,8 @@ resource "azuread_service_principal" "buletine_api_sp" {
 
   depends_on = [ azuread_application.buletine_api ]
 }
+
+
 
 #
 # Create a client secret for the application
