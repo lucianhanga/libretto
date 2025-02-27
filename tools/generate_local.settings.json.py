@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import json
 import subprocess
 
@@ -23,7 +24,7 @@ def get_terraform_output(output_name):
 settings = {
     "IsEncrypted": False,
     "Values": {
-        "AzureWebJobsStorage": f"DefaultEndpointsProtocol=https;AccountName={get_terraform_output('storage_account_name')};AccountKey=your-storage-key-here;EndpointSuffix=core.windows.net",  # Replace with actual key
+        "AzureWebJobsStorage": f"DefaultEndpointsProtocol=https;AccountName={get_terraform_output('storage_account_name')};AccountKey={get_terraform_output('storage_account_key')};EndpointSuffix=core.windows.net",  # Replace with actual key
         "AzureWebJobs.ImageAvailable.Disabled": "true",
         "FUNCTIONS_WORKER_RUNTIME": "python",
         "STORAGE_ACCOUNT_NAME": get_terraform_output("storage_account_name"),
