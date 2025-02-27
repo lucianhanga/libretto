@@ -20,14 +20,23 @@ resource "azuread_application" "buletine_api" {
       user_consent_description   = "Allows the app to read your files."
       user_consent_display_name  = "Read your files"
       value                      = "Files.Read"
-      id = "e1fe6dd8-ba31-4d61-89e7-88639da4683d"
+      id = "0040f80f-bb46-4ca6-9b02-4bd92b4a974d"
       type = "User"
       enabled = true
     }
   }
-
 }
 
+resource "azuread_application_api_access" "buletine_api_api" {
+  application_id = azuread_application.buletine_api.id
+  api_client_id = azuread_application.buletine_api.client_id
+
+  scope_ids = [
+    "0040f80f-bb46-4ca6-9b02-4bd92b4a974d"
+  ]
+  
+  depends_on = [ azuread_application.buletine_api ]
+}
 
 # # Step 2: Set the Application ID URI using the created application ID
 # resource "azuread_application_identifier_uri" "buletine_api_uri" {
