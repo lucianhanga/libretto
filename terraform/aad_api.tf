@@ -2,6 +2,10 @@
 resource "azuread_application" "buletine_api" {
   display_name = "Buletine API"
 
+  identifier_uris = [
+    "api://blondubuiletine"
+  ]
+
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph API
 
@@ -13,17 +17,36 @@ resource "azuread_application" "buletine_api" {
 
   api {
     oauth2_permission_scope {
-      admin_consent_description  = "Allows the app to read the signed-in user's files."
-      admin_consent_display_name = "Read user files"
-      user_consent_description   = "Allows the app to read your files."
-      user_consent_display_name  = "Read your files"
-      value                      = "Files.Read"
-      id = "0040f80f-bb46-4ca6-9b02-4bd92b4a974d"
+      admin_consent_description  = "Allows the app to call the exposed API"
+      admin_consent_display_name = "Call the exposed API"
+      user_consent_description   = "Call the exposed API"
+      user_consent_display_name  = "API Calls"
+      value                      = "user_impersonation"
+      id = "d890bc22-7bf0-435a-bc11-98b4cd6baf7c"
       type = "User"
       enabled = true
-    }
+    }    
   }
 }
+
+resource "azuread_application_pre_authorized" "azurecli" {
+  application_id = azuread_application.buletine_api.id
+  authorized_client_id = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
+
+  permission_ids = [
+    "d890bc22-7bf0-435a-bc11-98b4cd6baf7c"
+  ]
+
+  depends_on = [ azuread_application.buletine_api ]
+}
+
+resource "azuread_application_identifier_uri" "buletine_api_uri" {
+  application_id = azuread_application.buletine_api.id
+  identifier_uri = "api://${var.project_name}"
+
+  depends_on = [ azuread_application.buletine_api ]
+}
+
 
 #  this is required only if the function calls its own API
 # 
@@ -66,4 +89,9 @@ output "buletine_api_client_secret" {
 
 output "buletine_api_tenant_id" {
   value = data.azurerm_client_config.current.tenant_id
+}
+
+# output the URI
+output "buletine_api_uri" {
+  value = azuread_application_identifier_uri.buletine_api_uri.identifier_uri
 }

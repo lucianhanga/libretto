@@ -33,6 +33,10 @@ resource "azurerm_linux_function_app" "api" {
     }
   }
 
+  app_settings = {
+    "BULETINE_API_CLIENT_SECRET" = azuread_application_password.buletine_api_secret.value
+  }
+
   auth_settings_v2 {
     auth_enabled = true
     require_authentication = true
@@ -40,6 +44,7 @@ resource "azurerm_linux_function_app" "api" {
     active_directory_v2 {
       client_id = azuread_application.buletine_api.client_id
       tenant_auth_endpoint = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0"
+      client_secret_setting_name = "BULETINE_API_CLIENT_SECRET"
     }
     login {
     }
@@ -47,10 +52,6 @@ resource "azurerm_linux_function_app" "api" {
 
   identity {
     type = "SystemAssigned"
-  }
-
-  app_settings = {
-    "BULETINE_API_CLIENT_SECRET" = azuread_application_password.buletine_api_secret.value
   }
 
   depends_on = [ 
