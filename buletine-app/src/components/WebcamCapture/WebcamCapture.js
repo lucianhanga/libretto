@@ -1,9 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import Webcam from "react-webcam";
 import "./WebcamCapture.css";
 
-const WebcamCapture = ({ onCapture }) => {
-  const [capturing, setCapturing] = useState(false);
+const WebcamCapture = ({ onCapture, capturing, setCapturing }) => {
   const webcamRef = useRef(null);
 
   const capturePhoto = () => {
@@ -17,7 +16,7 @@ const WebcamCapture = ({ onCapture }) => {
       {!capturing ? (
         <button className="btn btn-primary" onClick={() => setCapturing(true)}>Capture Photo</button>
       ) : (
-        <div>
+        <div className="webcam-container">
           <Webcam ref={webcamRef} screenshotFormat="image/png" />
           <button className="btn btn-primary" onClick={capturePhoto}>Take Photo</button>
         </div>

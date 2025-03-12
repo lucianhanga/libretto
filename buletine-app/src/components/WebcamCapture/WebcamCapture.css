@@ -1,0 +1,9 @@
+.webcam-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.webcam-container button {
+  margin-top: 10px;
+}

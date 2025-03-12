@@ -6,9 +6,11 @@ import "./App.css"; // Import the CSS file
 
 const App = () => {
   const [image, setImage] = useState(null);
+  const [capturing, setCapturing] = useState(false);
 
   const handleCapture = (imgSrc) => {
     setImage(imgSrc);
+    setCapturing(false);
   };
 
   const handleFileChange = (event) => {
@@ -33,10 +35,15 @@ const App = () => {
     <div className="container">
       <h1>React Webcam Capture</h1>
       {!image ? (
-        <>
-          <WebcamCapture onCapture={handleCapture} />
-          <input type="file" accept="image/*" onChange={handleFileChange} className="btn btn-secondary" />
-        </>
+        <div className="button-group">
+          <WebcamCapture onCapture={handleCapture} capturing={capturing} setCapturing={setCapturing} />
+          {!capturing && (
+            <label className="btn btn-secondary">
+              Choose File
+              <input type="file" accept="image/*" onChange={handleFileChange} style={{ display: "none" }} />
+            </label>
+          )}
+        </div>
       ) : (
         <ImagePreview image={image} onRetake={handleRetake} onSubmit={handleSubmit} />
       )}
