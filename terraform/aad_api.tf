@@ -3,7 +3,7 @@ resource "azuread_application" "buletine_api" {
   display_name = "Buletine API"
 
   identifier_uris = [
-    "api://blondubuiletine"
+    "api://${var.project_name}"
   ]
 
   required_resource_access {
