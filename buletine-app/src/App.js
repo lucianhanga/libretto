@@ -1,12 +1,26 @@
-import React, { useState } from "react";
-import WebcamCapture from "./components/WebcamCapture";
-import ImagePreview from "./components/ImagePreview";
-import CSVButtons from "./components/CSVButtons";
-import "./App.css"; // Import the CSS file
+import React from 'react';
+import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication } from '@azure/msal-react';
+import { InteractionType } from '@azure/msal-browser';
+import { loginRequest } from './authConfig';
+import WebcamCapture from './components/WebcamCapture';
+import ImagePreview from './components/ImagePreview';
+import CSVButtons from './components/CSVButtons';
+import './App.css';
 
 const App = () => {
-  const [image, setImage] = useState(null);
-  const [capturing, setCapturing] = useState(false);
+  const { login, result, error } = useMsalAuthentication(InteractionType.Redirect, loginRequest);
+
+  React.useEffect(() => {
+    if (result) {
+      console.log("Authentication successful:", result);
+    }
+    if (error) {
+      console.error("Authentication error:", error);
+    }
+  }, [result, error]);
+
+  const [image, setImage] = React.useState(null);
+  const [capturing, setCapturing] = React.useState(false);
 
   const handleCapture = (imgSrc) => {
     setImage(imgSrc);
@@ -34,20 +48,26 @@ const App = () => {
   return (
     <div className="container">
       <h1>React Webcam Capture</h1>
-      {!image ? (
-        <div className="button-group">
-          <WebcamCapture onCapture={handleCapture} capturing={capturing} setCapturing={setCapturing} />
-          {!capturing && (
-            <label className="btn btn-secondary">
-              Choose File
-              <input type="file" accept="image/*" onChange={handleFileChange} style={{ display: "none" }} />
-            </label>
-          )}
-        </div>
-      ) : (
-        <ImagePreview image={image} onRetake={handleRetake} onSubmit={handleSubmit} />
-      )}
-      <CSVButtons />
+      <AuthenticatedTemplate>
+        {!image ? (
+          <div className="button-group">
+            <WebcamCapture onCapture={handleCapture} capturing={capturing} setCapturing={setCapturing} />
+            {!capturing && (
+              <label className="btn btn-secondary">
+                Choose File
+                <input type="file" accept="image/*" onChange={handleFileChange} style={{ display: "none" }} />
+              </label>
+            )}
+          </div>
+        ) : (
+          <ImagePreview image={image} onRetake={handleRetake} onSubmit={handleSubmit} />
+        )}
+        <CSVButtons />
+      </AuthenticatedTemplate>
+      <UnauthenticatedTemplate>
+        <p>You need to sign in to use the app.</p>
+        <button onClick={() => login()}>Sign In</button>
+      </UnauthenticatedTemplate>
     </div>
   );
 };

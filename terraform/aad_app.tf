@@ -2,14 +2,10 @@
 resource "azuread_application" "buletine_app" {
   display_name = "Buletine App"
 
-  web {
+  single_page_application {
     redirect_uris = [
-      "http://localhost:3000/"
+      "http://localhost:3000/",
     ]
-    implicit_grant {
-      access_token_issuance_enabled = true
-      id_token_issuance_enabled     = true
-    }
   }
 
   required_resource_access {

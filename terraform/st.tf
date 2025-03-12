@@ -22,15 +22,15 @@ resource "azurerm_storage_account" "st" {
     error_404_document = "index.html"
   }
 
-#   blob_properties {
-#     cors_rule {
-#       allowed_headers = ["*"]
-#       allowed_methods = ["GET", "POST", "PUT", "DELETE"]
-#       allowed_origins = ["*"]
-#       exposed_headers = ["*"]
-#       max_age_in_seconds = 3600
-#     }
-#   }
+  blob_properties {
+    cors_rule {
+      allowed_headers = ["*"]
+      allowed_methods = ["GET", "POST", "PUT", "DELETE"]
+      allowed_origins = ["*"]
+      exposed_headers = ["*"]
+      max_age_in_seconds = 3600
+    }
+  }
 }
 
 #
