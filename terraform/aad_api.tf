@@ -39,15 +39,6 @@ resource "azuread_application_pre_authorized" "azurecli" {
 
   depends_on = [ azuread_application.buletine_api ]
 }
-
-resource "azuread_application_identifier_uri" "buletine_api_uri" {
-  application_id = azuread_application.buletine_api.id
-  identifier_uri = "api://${var.project_name}"
-
-  depends_on = [ azuread_application.buletine_api ]
-}
-
-
 #  this is required only if the function calls its own API
 # 
 # resource "azuread_application_api_access" "buletine_api_api" {
@@ -93,5 +84,5 @@ output "buletine_api_tenant_id" {
 
 # output the URI
 output "buletine_api_uri" {
-  value = azuread_application_identifier_uri.buletine_api_uri.identifier_uri
+  value = "api://${var.project_name}"
 }

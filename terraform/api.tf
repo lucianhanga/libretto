@@ -46,9 +46,7 @@ resource "azurerm_linux_function_app" "api" {
       tenant_auth_endpoint = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0"
       client_secret_setting_name = "BULETINE_API_CLIENT_SECRET"
 
-      allowed_audiences = [
-        azuread_application_identifier_uri.buletine_api_uri.identifier_uri
-      ]
+      allowed_audiences = azuread_application.buletine_api.identifier_uris
     }
     login {
     }
