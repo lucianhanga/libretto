@@ -1,76 +1,4 @@
-#
-# Register the application in Azure AD
-# 
-resource "azuread_application" "buletine_api" {
-  display_name = "Buletine API"
-
-  required_resource_access {
-    resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph API
-
-    resource_access {
-      id   = "e1fe6dd8-ba31-4d61-89e7-88639da4683d"  # User.Read (Delegated)
-      type = "Scope"
-    }
-  }
-
-  api {
-    oauth2_permission_scope {
-      admin_consent_description  = "Allows the app to read the signed-in user's files."
-      admin_consent_display_name = "Read user files"
-      user_consent_description   = "Allows the app to read your files."
-      user_consent_display_name  = "Read your files"
-      value                      = "Files.Read"
-      id = "0040f80f-bb46-4ca6-9b02-4bd92b4a974d"
-      type = "User"
-      enabled = true
-    }
-  }
-}
-
-resource "azuread_application_api_access" "buletine_api_api" {
-  application_id = azuread_application.buletine_api.id
-  api_client_id = azuread_application.buletine_api.client_id
-
-  scope_ids = [
-    "0040f80f-bb46-4ca6-9b02-4bd92b4a974d"
-  ]
-  
-  depends_on = [ azuread_application.buletine_api ]
-}
-
-# # Step 2: Set the Application ID URI using the created application ID
-# resource "azuread_application_identifier_uri" "buletine_api_uri" {
-#   application_id  = azuread_application.buletine_api.id
-#   identifier_uri  = "api://${azuread_application.buletine_api.client_id}"
-
-#   depends_on = [ azuread_application.buletine_api ]
-# }
-
-#
-# Create a service principal for the application
-#
-resource "azuread_service_principal" "buletine_api_sp" {
-  client_id = azuread_application.buletine_api.client_id
-
-  depends_on = [ azuread_application.buletine_api ]
-}
-
-
-
-#
-# Create a client secret for the application
-#
-resource "azuread_application_password" "buletine_api_secret" {
-  application_id = azuread_application.buletine_api.id
-  display_name          = "Buletine API Secret"
-  end_date              = "2025-10-10T00:00:00Z" # 1 year from now
-
-  depends_on = [ azuread_application.buletine_api ]
-}
-
-
 # define the Azure Function App Service Plan
-
 locals {
   func_service_plan_name = "asp-${var.project_name}"
 }
@@ -85,7 +13,6 @@ resource "azurerm_service_plan" "function_service_plan" {
 }
 
 # define the Azure Function App
-
 locals {
   func_app_name = "api-${var.project_name}"
 }
@@ -121,6 +48,11 @@ resource "azurerm_linux_function_app" "api" {
   identity {
     type = "SystemAssigned"
   }
+
+  app_settings = {
+    "BULETINE_API_CLIENT_SECRET" = azuread_application_password.buletine_api_secret.value
+  }
+
   depends_on = [ 
     azuread_application.buletine_api,
     azurerm_service_plan.function_service_plan,
@@ -128,9 +60,7 @@ resource "azurerm_linux_function_app" "api" {
   ]
 }
 
-#
 # assign the identity of the function app to the storage account
-#
 resource "azurerm_role_assignment" "function_app_storage_account_blob_rights" {
   scope                = azurerm_storage_account.st.id
   role_definition_name = "Storage Blob Data Contributor"
@@ -142,9 +72,7 @@ resource "azurerm_role_assignment" "function_app_storage_account_blob_rights" {
   ] 
 } 
 
-# 
 # assign the identity of the function app to the storage account to deal with the table
-# 
 resource "azurerm_role_assignment" "function_app_storage_account_table_rights" {
   scope                = azurerm_storage_account.st.id
   role_definition_name = "Storage Table Data Contributor"
@@ -156,9 +84,7 @@ resource "azurerm_role_assignment" "function_app_storage_account_table_rights" {
   ]
 }
 
-#
 # assign the identity of the function app to the cognitive service
-#
 resource "azurerm_role_assignment" "function_app_cognitive_service_rights" {
   scope                = azurerm_cognitive_account.document_intelligence.id
   role_definition_name = "Cognitive Services Contributor"
@@ -169,20 +95,3 @@ resource "azurerm_role_assignment" "function_app_cognitive_service_rights" {
     azurerm_linux_function_app.api
   ]
 }
-
-
-
-# Output the client ID and secret
-output "buletine_api_client_id" {
-  value = azuread_application.buletine_api.client_id
-}
-
-output "buletine_api_client_secret" {
-  value = azuread_application_password.buletine_api_secret.value
-  sensitive = true
-}
-
-output "buletine_api_tenant_id" {
-  value = data.azurerm_client_config.current.tenant_id
-}
-
