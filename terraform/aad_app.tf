@@ -5,6 +5,8 @@ resource "azuread_application" "buletine_app" {
   single_page_application {
     redirect_uris = [
       "http://localhost:3000/",
+      # the storage account primary web endpoint
+      "${azurerm_storage_account.st.primary_web_endpoint}",
     ]
   }
 
@@ -16,6 +18,8 @@ resource "azuread_application" "buletine_app" {
       type = "Scope"
     }
   }
+
+  depends_on = [ azurerm_storage_account.st ]
 }
 
 # Create a service principal for the application
