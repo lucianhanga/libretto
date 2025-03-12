@@ -19,6 +19,15 @@ resource "azuread_application" "buletine_app" {
     }
   }
 
+  required_resource_access {
+    resource_app_id = azuread_application.buletine_api.client_id
+    resource_access {
+      id   = "d890bc22-7bf0-435a-bc11-98b4cd6baf7c"
+      type = "Scope"
+    }
+  
+  }
+
   depends_on = [ azurerm_storage_account.st ]
 }
 

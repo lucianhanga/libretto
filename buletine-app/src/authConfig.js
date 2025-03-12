@@ -39,5 +39,5 @@ export const msalConfig = {
 };
 
 export const loginRequest = {
-  scopes: ["User.Read"]
+  scopes: ["api://blondubuletine/user_impersonation"],
 };
