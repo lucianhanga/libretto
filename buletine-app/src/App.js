@@ -2,9 +2,8 @@ import React from 'react';
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal, useMsalAuthentication } from '@azure/msal-react';
 import { InteractionType } from '@azure/msal-browser';
 import { loginRequest } from './authConfig';
-import WebcamCapture from './components/WebcamCapture';
-import ImagePreview from './components/ImagePreview';
-import CSVButtons from './components/CSVButtons';
+import AuthenticatedApp from './components/AuthenticatedApp';
+import UnauthenticatedApp from './components/UnauthenticatedApp';
 import './App.css';
 
 const App = () => {
@@ -37,6 +36,7 @@ const App = () => {
   const [image, setImage] = React.useState(null);
   const [capturing, setCapturing] = React.useState(false);
   const [accessToken, setAccessToken] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const handleCapture = (imgSrc) => {
     setImage(imgSrc);
@@ -72,6 +72,8 @@ const App = () => {
 
     console.log("Request body JSON:", JSON.stringify(requestBody, null, 2));
 
+    setIsLoading(true);
+
     try {
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/uploadimage`, {
         method: 'POST',
@@ -83,13 +85,17 @@ const App = () => {
       });
 
       if (response.ok) {
-        console.log("Photo submitted successfully");
+        const responseData = await response.json();
+        console.log("Photo submitted successfully:", responseData);
         setImage(null);
       } else {
-        console.error("Failed to submit photo", response.statusText);
+        const errorData = await response.text();
+        console.error("Failed to submit photo:", errorData);
       }
     } catch (error) {
-      console.error("Error submitting photo", error);
+      console.error("Error submitting photo:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -97,24 +103,19 @@ const App = () => {
     <div className="container">
       <h1>React Webcam Capture</h1>
       <AuthenticatedTemplate>
-        {!image ? (
-          <div className="button-group">
-            <WebcamCapture onCapture={handleCapture} capturing={capturing} setCapturing={setCapturing} />
-            {!capturing && (
-              <label className="btn btn-secondary">
-                Choose File
-                <input type="file" accept="image/*" onChange={handleFileChange} style={{ display: "none" }} />
-              </label>
-            )}
-          </div>
-        ) : (
-          <ImagePreview image={image} onRetake={handleRetake} onSubmit={handleSubmit} />
-        )}
-        <CSVButtons />
+        <AuthenticatedApp
+          image={image}
+          capturing={capturing}
+          handleCapture={handleCapture}
+          handleFileChange={handleFileChange}
+          handleRetake={handleRetake}
+          handleSubmit={handleSubmit}
+          setCapturing={setCapturing}
+          isLoading={isLoading}
+        />
       </AuthenticatedTemplate>
       <UnauthenticatedTemplate>
-        <p>You need to sign in to use the app.</p>
-        <button onClick={() => login()}>Sign In</button>
+        <UnauthenticatedApp login={login} />
       </UnauthenticatedTemplate>
     </div>
   );
