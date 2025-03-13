@@ -5,10 +5,10 @@ import CSVButtons from '../CSVButtons';
 import StatusBar from '../StatusBar';
 import './AuthenticatedApp.css';
 
-const AuthenticatedApp = ({ image, capturing, handleCapture, handleFileChange, handleRetake, handleSubmit, setCapturing, isLoading, status, progress, progressLabel }) => {
+const AuthenticatedApp = ({ image, capturing, handleCapture, handleFileChange, handleRetake, handleSubmit, setCapturing, isLoading, status }) => {
   return (
     <div>
-      <StatusBar status={status} progress={progress} progressLabel={progressLabel} />
+      <StatusBar status={status} />
       {!image ? (
         <div className="button-group">
           <WebcamCapture onCapture={handleCapture} capturing={capturing} setCapturing={setCapturing} />

@@ -48,8 +48,8 @@ const useResultPulling = (accessToken) => {
         attempts++;
         setProgress((attempts / 10) * 100);
         console.log(`Progress updated to ${(attempts / 10) * 100}%`);
-      }, 1000); // 5-second interval
-    }, 1000); // Initial 5-second delay
+      }, 5000); // 5-second interval
+    }, 5000); // Initial 5-second delay
   };
 
   return {

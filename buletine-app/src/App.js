@@ -14,8 +14,6 @@ const App = () => {
     capturing,
     isLoading,
     status: uploadStatus,
-    progress: uploadProgress,
-    progressLabel: uploadProgressLabel,
     handleCapture,
     handleFileChange,
     handleRetake,
@@ -25,8 +23,6 @@ const App = () => {
 
   const {
     status: pullingStatus,
-    progress: pullingProgress,
-    progressLabel: pullingProgressLabel,
     startPullingResult
   } = useResultPulling(accessToken);
 
@@ -51,8 +47,6 @@ const App = () => {
           setCapturing={setCapturing}
           isLoading={isLoading}
           status={uploadStatus || pullingStatus}
-          progress={uploadProgress || pullingProgress}
-          progressLabel={uploadProgressLabel || pullingProgressLabel}
         />
       </AuthenticatedTemplate>
       <UnauthenticatedTemplate>
