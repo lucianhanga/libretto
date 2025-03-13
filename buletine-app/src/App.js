@@ -24,7 +24,9 @@ const App = () => {
   const {
     status: pullingStatus,
     startPullingResult,
-    fields
+    fields,
+    showParsedData,
+    setShowParsedData
   } = useResultPulling(accessToken);
 
   const handleSubmitAndPull = async () => {
@@ -48,6 +50,8 @@ const App = () => {
           isLoading={isLoading}
           status={uploadStatus || pullingStatus}
           fields={fields}
+          showParsedData={showParsedData}
+          setShowParsedData={setShowParsedData}
         />
       </AuthenticatedTemplate>
       <UnauthenticatedTemplate>

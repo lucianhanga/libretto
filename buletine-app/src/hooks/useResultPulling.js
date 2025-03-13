@@ -5,6 +5,7 @@ const useResultPulling = (accessToken) => {
   const [status, setStatus] = useState('');
   const [saved, setSaved] = useState(false); // Track if data has been saved
   const [fields, setFields] = useState([]); // Store the parsed fields
+  const [showParsedData, setShowParsedData] = useState(false); // Track whether to show parsed data
 
   const startPullingResult = (id) => {
     console.log("Starting result pulling process...");
@@ -34,6 +35,7 @@ const useResultPulling = (accessToken) => {
             clearInterval(interval);
             setStatus('success');
             parseAndSaveResult(resultData);
+            setShowParsedData(true); // Show parsed data
           } else {
             const errorText = await response.text();
             console.error("Failed to retrieve result:", errorText);
@@ -107,7 +109,9 @@ const useResultPulling = (accessToken) => {
   return {
     status,
     startPullingResult,
-    fields
+    fields,
+    showParsedData,
+    setShowParsedData
   };
 };
 

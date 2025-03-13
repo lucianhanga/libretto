@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import WebcamCapture from '../WebcamCapture';
 import ImagePreview from '../ImagePreview';
 import CSVButtons from '../CSVButtons';
 import ParsedDataDisplay from '../ParsedDataDisplay';
 import './AuthenticatedApp.css';
 
-const AuthenticatedApp = ({ image, capturing, handleCapture, handleFileChange, handleRetake, handleSubmit, setCapturing, isLoading, status, fields }) => {
-  const [showParsedData, setShowParsedData] = useState(true);
-
+const AuthenticatedApp = ({ image, capturing, handleCapture, handleFileChange, handleRetake, handleSubmit, setCapturing, isLoading, status, fields, showParsedData, setShowParsedData }) => {
   const handleRetakeClick = () => {
     handleRetake();
     setShowParsedData(false);
