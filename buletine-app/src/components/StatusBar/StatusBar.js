@@ -10,7 +10,7 @@ const StatusBar = ({ status, progress, progressLabel }) => {
       {status === 'error' && 'Error submitting'}
       {status === 'pulling' && 'Pulling result...'}
       {(status === 'sending' || status === 'pulling') && (
-        <ProgressBar progress={progress} label={progressLabel} />
+        <ProgressBar progress={progress} label={progressLabel} status={status} />
       )}
     </div>
   );

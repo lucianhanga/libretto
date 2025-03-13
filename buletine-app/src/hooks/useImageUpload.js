@@ -41,6 +41,16 @@ const useImageUpload = (accessToken) => {
     setProgress(0);
     setProgressLabel('Sending photo...');
 
+    const interval = setInterval(() => {
+      setProgress((prevProgress) => {
+        const newProgress = prevProgress + (100 / 30);
+        if (newProgress >= 100) {
+          clearInterval(interval);
+        }
+        return newProgress;
+      });
+    }, 1000);
+
     try {
       const response = await submitPhoto(requestBody);
 
@@ -50,6 +60,7 @@ const useImageUpload = (accessToken) => {
         setStatus('success');
         setProgress(100);
         setProgressLabel('Photo submitted successfully');
+        clearInterval(interval);
         return responseData.id;
       } else {
         handleErrorResponse(response);
