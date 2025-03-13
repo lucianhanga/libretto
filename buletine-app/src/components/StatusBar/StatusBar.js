@@ -1,13 +1,19 @@
 import React from 'react';
 import './StatusBar.css';
 
-const StatusBar = ({ status }) => {
+const StatusBar = ({ status, progress, progressLabel }) => {
   return (
     <div className={`status-bar ${status}`}>
       {status === 'sending' && 'Sending photo...'}
       {status === 'success' && 'Success'}
       {status === 'error' && 'Error submitting'}
-      {status === 'pulling' && 'Pulling result...'}
+      {status === 'pulling' && (
+        <>
+          <div>Pulling result...</div>
+          <div>Progress: {progress}%</div>
+        </>
+      )}
+      {progressLabel && <div>{progressLabel}</div>}
     </div>
   );
 };

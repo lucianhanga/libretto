@@ -36,7 +36,7 @@ const useResultPulling = (accessToken) => {
             clearInterval(interval);
             setStatus('success');
             setProgress(100);
-            setProgressLabel('Result retrieved successfully');
+            setProgressLabel('');
           } else {
             const errorText = await response.text();
             console.error("Failed to retrieve result:", errorText);

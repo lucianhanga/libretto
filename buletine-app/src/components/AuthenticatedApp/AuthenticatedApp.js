@@ -5,10 +5,10 @@ import CSVButtons from '../CSVButtons';
 import StatusBar from '../StatusBar';
 import './AuthenticatedApp.css';
 
-const AuthenticatedApp = ({ image, capturing, handleCapture, handleFileChange, handleRetake, handleSubmit, setCapturing, isLoading, status }) => {
+const AuthenticatedApp = ({ image, capturing, handleCapture, handleFileChange, handleRetake, handleSubmit, setCapturing, isLoading, status, progress, progressLabel, handleCancel }) => {
   return (
     <div>
-      <StatusBar status={status} />
+      <StatusBar status={status} progress={progress} progressLabel={progressLabel} />
       {!image ? (
         <div className="button-group">
           <WebcamCapture onCapture={handleCapture} capturing={capturing} setCapturing={setCapturing} />
@@ -20,7 +20,7 @@ const AuthenticatedApp = ({ image, capturing, handleCapture, handleFileChange, h
           )}
         </div>
       ) : (
-        <ImagePreview image={image} onRetake={handleRetake} onSubmit={handleSubmit} isLoading={isLoading} />
+        <ImagePreview image={image} onRetake={handleRetake} onSubmit={handleSubmit} isLoading={isLoading} onCancel={handleCancel} />
       )}
       <CSVButtons />
     </div>
