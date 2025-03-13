@@ -7,6 +7,7 @@
   background-color: #f3f3f3;
   border-radius: 5px;
   overflow: hidden;
+  position: relative;
 }
 
 .progress {
@@ -14,6 +15,15 @@
   background-color: #4caf50;
   width: 0;
   transition: width 0.2s;
+}
+
+.progress-indicator {
+  position: absolute;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transform: translateY(-50%);
 }
 
 .progress-label {

@@ -19,3 +19,8 @@
   background-color: #d9534f;
   color: white;
 }
+
+.status-bar.pulling {
+  background-color: #5bc0de;
+  color: white;
+}

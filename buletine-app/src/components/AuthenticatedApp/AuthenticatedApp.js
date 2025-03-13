@@ -3,13 +3,12 @@ import WebcamCapture from '../WebcamCapture';
 import ImagePreview from '../ImagePreview';
 import CSVButtons from '../CSVButtons';
 import StatusBar from '../StatusBar';
-import ProgressBar from '../ProgressBar';
 import './AuthenticatedApp.css';
 
 const AuthenticatedApp = ({ image, capturing, handleCapture, handleFileChange, handleRetake, handleSubmit, setCapturing, isLoading, status, progress, progressLabel }) => {
   return (
     <div>
-      <StatusBar status={status} />
+      <StatusBar status={status} progress={progress} progressLabel={progressLabel} />
       {!image ? (
         <div className="button-group">
           <WebcamCapture onCapture={handleCapture} capturing={capturing} setCapturing={setCapturing} />
@@ -24,7 +23,6 @@ const AuthenticatedApp = ({ image, capturing, handleCapture, handleFileChange, h
         <ImagePreview image={image} onRetake={handleRetake} onSubmit={handleSubmit} isLoading={isLoading} />
       )}
       <CSVButtons />
-      {(status === 'sending' || status === 'pulling') && <ProgressBar progress={progress} label={progressLabel} />}
     </div>
   );
 };
