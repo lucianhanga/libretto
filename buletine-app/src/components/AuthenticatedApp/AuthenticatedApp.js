@@ -1,19 +1,24 @@
-import React from 'react';
-import WebcamCapture from '../WebcamCapture';
-import ImagePreview from '../ImagePreview';
+import React, { useState } from 'react';
+import TitleSection from '../TitleSection';
+import CaptureSection from '../CaptureSection';
+import PullResultSection from '../PullResultSection';
 import CSVButtons from '../CSVButtons';
 import ParsedDataDisplay from '../ParsedDataDisplay';
 import './AuthenticatedApp.css';
 
 const AuthenticatedApp = ({ image, capturing, handleCapture, handleFileChange, handleRetake, handleSubmit, setCapturing, isLoading, status, fields, showParsedData, setShowParsedData }) => {
+  const [showPullResult, setShowPullResult] = useState(false);
+
   const handleRetakeClick = () => {
     handleRetake();
     setShowParsedData(false);
+    setShowPullResult(false);
   };
 
   const handleSubmitClick = async () => {
     await handleSubmit();
     setShowParsedData(false);
+    setShowPullResult(true);
   };
 
   const handleCSVButtonClick = () => {
@@ -22,44 +27,29 @@ const AuthenticatedApp = ({ image, capturing, handleCapture, handleFileChange, h
 
   return (
     <div className="authenticated-app">
-      {/* Title Section */}
-      <div className="title-section">
-        <h1>Blondu Buletine</h1>
-      </div>
+      <TitleSection />
 
-      {/* Placeholder Section */}
-      {!image && !capturing && (
-        <div className="placeholder-section">
-          <img src="/logo512.png" alt="Placeholder" className="placeholder-image" />
-        </div>
+      {!showPullResult && (
+        <CaptureSection
+          image={image}
+          capturing={capturing}
+          handleCapture={handleCapture}
+          handleFileChange={handleFileChange}
+          handleRetakeClick={handleRetakeClick}
+          handleSubmitClick={handleSubmitClick}
+          setCapturing={setCapturing}
+          isLoading={isLoading}
+        />
       )}
 
-      {/* WebcamCapture Section */}
-      {!image && (
-        <div className="webcam-capture-section">
-          <div className="button-group">
-            <WebcamCapture onCapture={handleCapture} capturing={capturing} setCapturing={setCapturing} />
-            {!capturing && (
-              <label className="btn btn-secondary">
-                Choose File
-                <input type="file" accept="image/*" onChange={handleFileChange} style={{ display: "none" }} />
-              </label>
-            )}
-          </div>
-        </div>
+      {showPullResult && (
+        <PullResultSection
+          image={image}
+        />
       )}
 
-      {/* ImagePreview Section */}
-      {image && (
-        <div className="image-preview-section">
-          <ImagePreview image={image} onRetake={handleRetakeClick} onSubmit={handleSubmitClick} isLoading={isLoading} />
-        </div>
-      )}
-
-      {/* ParsedDataDisplay Section */}
       {showParsedData && fields.length > 0 && <ParsedDataDisplay fields={fields} />}
 
-      {/* CSVButtons Section */}
       <CSVButtons onCSVButtonClick={handleCSVButtonClick} />
     </div>
   );
