@@ -2,7 +2,6 @@ import React from 'react';
 import WebcamCapture from '../WebcamCapture';
 import ImagePreview from '../ImagePreview';
 import CSVButtons from '../CSVButtons';
-import LoadingSpinner from '../LoadingSpinner';
 import StatusBar from '../StatusBar';
 import ProgressBar from '../ProgressBar';
 import './AuthenticatedApp.css';
@@ -11,7 +10,6 @@ const AuthenticatedApp = ({ image, capturing, handleCapture, handleFileChange, h
   return (
     <div>
       <StatusBar status={status} />
-      {isLoading && <LoadingSpinner />}
       {!image ? (
         <div className="button-group">
           <WebcamCapture onCapture={handleCapture} capturing={capturing} setCapturing={setCapturing} />
