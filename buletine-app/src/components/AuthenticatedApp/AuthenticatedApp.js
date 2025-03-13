@@ -1,6 +1,8 @@
 import React from 'react';
-import WebcamCapture from '../WebcamCapture';
-import ImagePreview from '../ImagePreview';
+import TitleSection from '../TitleSection';
+import PlaceholderSection from '../PlaceholderSection';
+import WebcamCaptureSection from '../WebcamCaptureSection';
+import ImagePreviewSection from '../ImagePreviewSection';
 import CSVButtons from '../CSVButtons';
 import ParsedDataDisplay from '../ParsedDataDisplay';
 import './AuthenticatedApp.css';
@@ -22,44 +24,30 @@ const AuthenticatedApp = ({ image, capturing, handleCapture, handleFileChange, h
 
   return (
     <div className="authenticated-app">
-      {/* Title Section */}
-      <div className="title-section">
-        <h1>Blondu Buletine</h1>
-      </div>
+      <TitleSection />
 
-      {/* Placeholder Section */}
-      {!image && !capturing && (
-        <div className="placeholder-section">
-          <img src="/logo512.png" alt="Placeholder" className="placeholder-image" />
-        </div>
-      )}
+      {!image && !capturing && <PlaceholderSection />}
 
-      {/* WebcamCapture Section */}
       {!image && (
-        <div className="webcam-capture-section">
-          <div className="button-group">
-            <WebcamCapture onCapture={handleCapture} capturing={capturing} setCapturing={setCapturing} />
-            {!capturing && (
-              <label className="btn btn-secondary">
-                Choose File
-                <input type="file" accept="image/*" onChange={handleFileChange} style={{ display: "none" }} />
-              </label>
-            )}
-          </div>
-        </div>
+        <WebcamCaptureSection
+          handleCapture={handleCapture}
+          capturing={capturing}
+          setCapturing={setCapturing}
+          handleFileChange={handleFileChange}
+        />
       )}
 
-      {/* ImagePreview Section */}
       {image && (
-        <div className="image-preview-section">
-          <ImagePreview image={image} onRetake={handleRetakeClick} onSubmit={handleSubmitClick} isLoading={isLoading} />
-        </div>
+        <ImagePreviewSection
+          image={image}
+          handleRetakeClick={handleRetakeClick}
+          handleSubmitClick={handleSubmitClick}
+          isLoading={isLoading}
+        />
       )}
 
-      {/* ParsedDataDisplay Section */}
       {showParsedData && fields.length > 0 && <ParsedDataDisplay fields={fields} />}
 
-      {/* CSVButtons Section */}
       <CSVButtons onCSVButtonClick={handleCSVButtonClick} />
     </div>
   );
