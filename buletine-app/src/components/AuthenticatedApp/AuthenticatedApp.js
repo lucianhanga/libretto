@@ -3,11 +3,13 @@ import WebcamCapture from '../WebcamCapture';
 import ImagePreview from '../ImagePreview';
 import CSVButtons from '../CSVButtons';
 import LoadingSpinner from '../LoadingSpinner';
+import StatusBar from '../StatusBar';
 import './AuthenticatedApp.css';
 
-const AuthenticatedApp = ({ image, capturing, handleCapture, handleFileChange, handleRetake, handleSubmit, setCapturing, isLoading }) => {
+const AuthenticatedApp = ({ image, capturing, handleCapture, handleFileChange, handleRetake, handleSubmit, setCapturing, isLoading, status }) => {
   return (
     <div>
+      <StatusBar status={status} />
       {isLoading && <LoadingSpinner />}
       {!image ? (
         <div className="button-group">

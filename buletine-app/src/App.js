@@ -37,6 +37,7 @@ const App = () => {
   const [capturing, setCapturing] = React.useState(false);
   const [accessToken, setAccessToken] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [status, setStatus] = React.useState('');
 
   const handleCapture = (imgSrc) => {
     setImage(imgSrc);
@@ -73,6 +74,7 @@ const App = () => {
     console.log("Request body JSON:", JSON.stringify(requestBody, null, 2));
 
     setIsLoading(true);
+    setStatus('sending');
 
     try {
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/uploadimage`, {
@@ -87,12 +89,15 @@ const App = () => {
       if (response.ok) {
         const responseData = await response.json();
         console.log("Photo submitted successfully:", responseData);
+        setStatus('success');
       } else {
         const errorData = await response.text();
         console.error("Failed to submit photo:", errorData);
+        setStatus('error');
       }
     } catch (error) {
       console.error("Error submitting photo:", error);
+      setStatus('error');
     } finally {
       setIsLoading(false);
     }
@@ -111,6 +116,7 @@ const App = () => {
           handleSubmit={handleSubmit}
           setCapturing={setCapturing}
           isLoading={isLoading}
+          status={status}
         />
       </AuthenticatedTemplate>
       <UnauthenticatedTemplate>
