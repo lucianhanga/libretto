@@ -36,13 +36,13 @@ const CSVButtons = ({ onCSVButtonClick }) => {
   return (
     <div style={{ marginTop: '30px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-        <button onClick={toggleCSVDisplay} className="csv-button">
+        <button onClick={() => handleButtonClick(toggleCSVDisplay)} className="csv-button">
           {showCSV ? "Hide CSV" : "Show CSV"}
         </button>
-        <button onClick={clearCSVData} className="csv-button red">
+        <button onClick={() => handleButtonClick(clearCSVData)} className="csv-button red">
           Clear CSV
         </button>
-        <button onClick={downloadCSV} className="csv-button green">
+        <button onClick={() => handleButtonClick(downloadCSV)} className="csv-button green">
           Download CSV
         </button>
       </div>
