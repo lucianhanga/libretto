@@ -31,6 +31,11 @@ resource "azurerm_linux_function_app" "api" {
     application_stack {
       python_version = "3.10"
     }
+
+    cors {
+      allowed_origins     = ["http://localhost:3000"]
+      support_credentials = true
+    }
   }
 
   app_settings = {
@@ -55,6 +60,7 @@ resource "azurerm_linux_function_app" "api" {
   identity {
     type = "SystemAssigned"
   }
+
 
   depends_on = [ 
     azuread_application.buletine_api,

@@ -70,6 +70,8 @@ const App = () => {
       extension: fileExtension
     };
 
+    console.log("Request body JSON:", JSON.stringify(requestBody, null, 2));
+
     try {
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/uploadimage`, {
         method: 'POST',
