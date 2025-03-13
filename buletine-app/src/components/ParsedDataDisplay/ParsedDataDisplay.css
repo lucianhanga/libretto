@@ -28,6 +28,11 @@
   border: none;
 }
 
+.save-button.disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
 .tooltip {
   position: fixed;
   top: 10px;

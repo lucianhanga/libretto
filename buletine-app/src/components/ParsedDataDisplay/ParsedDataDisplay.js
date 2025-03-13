@@ -57,7 +57,7 @@ const ParsedDataDisplay = ({ fields }) => {
       <button
         onClick={saveToLocalStorage}
         disabled={saved} // Disable the button if data has been saved
-        className="save-button"
+        className={`save-button ${saved ? 'disabled' : ''}`}
       >
         {saved ? "Saved" : "Save to CSV"}
       </button>
