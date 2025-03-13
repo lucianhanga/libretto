@@ -66,3 +66,21 @@ output "storage_account_key" {
   value       = azurerm_storage_account.st.primary_access_key
   sensitive   = true
 }
+
+# give "Storage Blob Data Contributor" role to the storage account for the actual user
+resource "azurerm_role_assignment" "role" {
+  scope                = azurerm_storage_account.st.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = data.azurerm_client_config.current.object_id
+
+  depends_on = [ azurerm_storage_account.st ]
+}
+
+# give "Storage Table Data Contributor" role to the storage account for the actual user
+resource "azurerm_role_assignment" "role_table" {
+  scope                = azurerm_storage_account.st.id
+  role_definition_name = "Storage Table Data Contributor"
+  principal_id         = data.azurerm_client_config.current.object_id
+
+  depends_on = [ azurerm_storage_account.st ]
+}
