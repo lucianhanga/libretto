@@ -1,9 +1,12 @@
+.progress-bar-container {
+  margin-top: 20px;
+}
+
 .progress-bar {
   width: 100%;
   background-color: #f3f3f3;
   border-radius: 5px;
   overflow: hidden;
-  margin-top: 20px;
 }
 
 .progress {
@@ -11,4 +14,10 @@
   background-color: #4caf50;
   width: 0;
   transition: width 0.2s;
+}
+
+.progress-label {
+  text-align: center;
+  margin-top: 5px;
+  font-weight: bold;
 }

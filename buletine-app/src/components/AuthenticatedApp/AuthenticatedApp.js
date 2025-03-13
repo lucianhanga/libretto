@@ -7,7 +7,7 @@ import StatusBar from '../StatusBar';
 import ProgressBar from '../ProgressBar';
 import './AuthenticatedApp.css';
 
-const AuthenticatedApp = ({ image, capturing, handleCapture, handleFileChange, handleRetake, handleSubmit, setCapturing, isLoading, status, progress }) => {
+const AuthenticatedApp = ({ image, capturing, handleCapture, handleFileChange, handleRetake, handleSubmit, setCapturing, isLoading, status, progress, progressLabel }) => {
   return (
     <div>
       <StatusBar status={status} />
@@ -26,7 +26,7 @@ const AuthenticatedApp = ({ image, capturing, handleCapture, handleFileChange, h
         <ImagePreview image={image} onRetake={handleRetake} onSubmit={handleSubmit} isLoading={isLoading} />
       )}
       <CSVButtons />
-      {status === 'pulling' && <ProgressBar progress={progress} />}
+      {(status === 'sending' || status === 'pulling') && <ProgressBar progress={progress} label={progressLabel} />}
     </div>
   );
 };

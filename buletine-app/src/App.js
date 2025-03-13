@@ -39,6 +39,7 @@ const App = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [status, setStatus] = React.useState('');
   const [progress, setProgress] = React.useState(0);
+  const [progressLabel, setProgressLabel] = React.useState('');
 
   const handleCapture = (imgSrc) => {
     setImage(imgSrc);
@@ -76,6 +77,8 @@ const App = () => {
 
     setIsLoading(true);
     setStatus('sending');
+    setProgress(0);
+    setProgressLabel('Sending photo...');
 
     try {
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/uploadimage`, {
@@ -91,15 +94,19 @@ const App = () => {
         const responseData = await response.json();
         console.log("Photo submitted successfully:", responseData);
         setStatus('success');
+        setProgress(100);
+        setProgressLabel('Photo submitted successfully');
         startPullingResult(responseData.id);
       } else {
         const errorData = await response.text();
         console.error("Failed to submit photo:", errorData);
         setStatus('error');
+        setProgressLabel('Error submitting photo');
       }
     } catch (error) {
       console.error("Error submitting photo:", error);
       setStatus('error');
+      setProgressLabel('Error submitting photo');
     } finally {
       setIsLoading(false);
     }
@@ -108,11 +115,14 @@ const App = () => {
   const startPullingResult = (id) => {
     setTimeout(() => {
       setStatus('pulling');
+      setProgress(0);
+      setProgressLabel('Pulling result...');
       let attempts = 0;
       const interval = setInterval(async () => {
         if (attempts >= 10) {
           clearInterval(interval);
           setStatus('error');
+          setProgressLabel('Failed to retrieve result after 10 attempts');
           console.error("Failed to retrieve result after 10 attempts");
           return;
         }
@@ -130,6 +140,8 @@ const App = () => {
             console.log("Result retrieved successfully:", resultData);
             clearInterval(interval);
             setStatus('success');
+            setProgress(100);
+            setProgressLabel('Result retrieved successfully');
           } else {
             console.error("Failed to retrieve result:", await response.text());
           }
@@ -158,6 +170,7 @@ const App = () => {
           isLoading={isLoading}
           status={status}
           progress={progress}
+          progressLabel={progressLabel}
         />
       </AuthenticatedTemplate>
       <UnauthenticatedTemplate>
