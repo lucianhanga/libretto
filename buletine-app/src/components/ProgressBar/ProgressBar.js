@@ -1,5 +1,4 @@
 import React from 'react';
-import './ProgressBar.css';
 
 const ProgressBar = ({ progress, label }) => {
   const indicators = [];
@@ -7,19 +6,19 @@ const ProgressBar = ({ progress, label }) => {
     indicators.push(
       <div
         key={i}
-        className="progress-indicator"
-        style={{ left: `${i * 10}%`, backgroundColor: progress >= i * 10 ? 'black' : 'transparent' }}
+        className={`absolute top-1/2 transform -translate-y-1/2 w-2.5 h-2.5 rounded-full ${progress >= i * 10 ? 'bg-black' : 'bg-transparent'}`}
+        style={{ left: `${i * 10}%` }}
       ></div>
     );
   }
 
   return (
-    <div className="progress-bar-container">
-      <div className="progress-bar">
-        <div className="progress" style={{ width: `${progress}%` }}></div>
+    <div className="mt-5">
+      <div className="relative w-full bg-gray-200 rounded overflow-hidden">
+        <div className="h-5 bg-green-500" style={{ width: `${progress}%` }}></div>
         {indicators}
       </div>
-      <div className="progress-label">{label}</div>
+      <div className="text-center mt-2 font-bold">{label}</div>
     </div>
   );
 };

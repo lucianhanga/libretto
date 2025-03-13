@@ -6,12 +6,14 @@ const useResultPulling = (accessToken) => {
   const [progressLabel, setProgressLabel] = useState('');
 
   const startPullingResult = (id) => {
+    console.log("Starting result pulling process...");
     setTimeout(() => {
       setStatus('pulling');
       setProgress(0);
       setProgressLabel('Pulling result...');
       let attempts = 0;
       const interval = setInterval(async () => {
+        console.log(`Attempt ${attempts + 1} to pull result...`);
         if (attempts >= 10) {
           clearInterval(interval);
           setStatus('error');
@@ -36,7 +38,8 @@ const useResultPulling = (accessToken) => {
             setProgress(100);
             setProgressLabel('Result retrieved successfully');
           } else {
-            console.error("Failed to retrieve result:", await response.text());
+            const errorText = await response.text();
+            console.error("Failed to retrieve result:", errorText);
           }
         } catch (error) {
           console.error("Error retrieving result:", error);
@@ -44,8 +47,9 @@ const useResultPulling = (accessToken) => {
 
         attempts++;
         setProgress((attempts / 10) * 100);
-      }, 20000);
-    }, 10000);
+        console.log(`Progress updated to ${(attempts / 10) * 100}%`);
+      }, 1000); // 5-second interval
+    }, 1000); // Initial 5-second delay
   };
 
   return {
