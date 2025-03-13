@@ -8,26 +8,21 @@ import './AuthenticatedApp.css';
 const AuthenticatedApp = ({ image, capturing, handleCapture, handleFileChange, handleRetake, handleSubmit, setCapturing, isLoading }) => {
   return (
     <div>
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : (
-        <>
-          {!image ? (
-            <div className="button-group">
-              <WebcamCapture onCapture={handleCapture} capturing={capturing} setCapturing={setCapturing} />
-              {!capturing && (
-                <label className="btn btn-secondary">
-                  Choose File
-                  <input type="file" accept="image/*" onChange={handleFileChange} style={{ display: "none" }} />
-                </label>
-              )}
-            </div>
-          ) : (
-            <ImagePreview image={image} onRetake={handleRetake} onSubmit={handleSubmit} />
+      {isLoading && <LoadingSpinner />}
+      {!image ? (
+        <div className="button-group">
+          <WebcamCapture onCapture={handleCapture} capturing={capturing} setCapturing={setCapturing} />
+          {!capturing && (
+            <label className="btn btn-secondary">
+              Choose File
+              <input type="file" accept="image/*" onChange={handleFileChange} style={{ display: "none" }} />
+            </label>
           )}
-          <CSVButtons />
-        </>
+        </div>
+      ) : (
+        <ImagePreview image={image} onRetake={handleRetake} onSubmit={handleSubmit} isLoading={isLoading} />
       )}
+      <CSVButtons />
     </div>
   );
 };

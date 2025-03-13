@@ -87,7 +87,6 @@ const App = () => {
       if (response.ok) {
         const responseData = await response.json();
         console.log("Photo submitted successfully:", responseData);
-        setImage(null);
       } else {
         const errorData = await response.text();
         console.error("Failed to submit photo:", errorData);
