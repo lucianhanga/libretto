@@ -38,6 +38,7 @@ const App = () => {
   const [accessToken, setAccessToken] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
   const [status, setStatus] = React.useState('');
+  const [progress, setProgress] = React.useState(0);
 
   const handleCapture = (imgSrc) => {
     setImage(imgSrc);
@@ -90,6 +91,7 @@ const App = () => {
         const responseData = await response.json();
         console.log("Photo submitted successfully:", responseData);
         setStatus('success');
+        startPullingResult(responseData.id);
       } else {
         const errorData = await response.text();
         console.error("Failed to submit photo:", errorData);
@@ -101,6 +103,44 @@ const App = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const startPullingResult = (id) => {
+    setTimeout(() => {
+      setStatus('pulling');
+      let attempts = 0;
+      const interval = setInterval(async () => {
+        if (attempts >= 10) {
+          clearInterval(interval);
+          setStatus('error');
+          console.error("Failed to retrieve result after 10 attempts");
+          return;
+        }
+
+        try {
+          const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/pullresults?guid=${id}`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${accessToken}`
+            }
+          });
+
+          if (response.ok) {
+            const resultData = await response.json();
+            console.log("Result retrieved successfully:", resultData);
+            clearInterval(interval);
+            setStatus('success');
+          } else {
+            console.error("Failed to retrieve result:", await response.text());
+          }
+        } catch (error) {
+          console.error("Error retrieving result:", error);
+        }
+
+        attempts++;
+        setProgress((attempts / 10) * 100);
+      }, 20000);
+    }, 10000);
   };
 
   return (
@@ -117,6 +157,7 @@ const App = () => {
           setCapturing={setCapturing}
           isLoading={isLoading}
           status={status}
+          progress={progress}
         />
       </AuthenticatedTemplate>
       <UnauthenticatedTemplate>
