@@ -28,6 +28,7 @@ const App = () => {
         account: accounts[0]
       });
       console.log("Access token acquired:", response.accessToken);
+      setAccessToken(response.accessToken);
     } catch (e) {
       console.error("Token acquisition failed:", e);
     }
@@ -35,6 +36,7 @@ const App = () => {
 
   const [image, setImage] = React.useState(null);
   const [capturing, setCapturing] = React.useState(false);
+  const [accessToken, setAccessToken] = React.useState(null);
 
   const handleCapture = (imgSrc) => {
     setImage(imgSrc);
@@ -54,9 +56,39 @@ const App = () => {
     setImage(null);
   };
 
-  const handleSubmit = () => {
-    console.log("Photo submitted:", image);
-    setImage(null);
+  const handleSubmit = async () => {
+    if (!accessToken) {
+      console.error("No access token available");
+      return;
+    }
+
+    const fileExtension = image.split(';')[0].split('/')[1];
+    const base64Image = image.split(',')[1];
+
+    const requestBody = {
+      image: base64Image,
+      extension: fileExtension
+    };
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/uploadimage`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      if (response.ok) {
+        console.log("Photo submitted successfully");
+        setImage(null);
+      } else {
+        console.error("Failed to submit photo", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error submitting photo", error);
+    }
   };
 
   return (
