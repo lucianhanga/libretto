@@ -1,8 +1,6 @@
 import React from 'react';
 import TitleSection from '../TitleSection';
-import PlaceholderSection from '../PlaceholderSection';
-import WebcamCaptureSection from '../WebcamCaptureSection';
-import ImagePreviewSection from '../ImagePreviewSection';
+import CaptureSection from '../CaptureSection';
 import CSVButtons from '../CSVButtons';
 import ParsedDataDisplay from '../ParsedDataDisplay';
 import './AuthenticatedApp.css';
@@ -26,25 +24,16 @@ const AuthenticatedApp = ({ image, capturing, handleCapture, handleFileChange, h
     <div className="authenticated-app">
       <TitleSection />
 
-      {!image && !capturing && <PlaceholderSection />}
-
-      {!image && (
-        <WebcamCaptureSection
-          handleCapture={handleCapture}
-          capturing={capturing}
-          setCapturing={setCapturing}
-          handleFileChange={handleFileChange}
-        />
-      )}
-
-      {image && (
-        <ImagePreviewSection
-          image={image}
-          handleRetakeClick={handleRetakeClick}
-          handleSubmitClick={handleSubmitClick}
-          isLoading={isLoading}
-        />
-      )}
+      <CaptureSection
+        image={image}
+        capturing={capturing}
+        handleCapture={handleCapture}
+        handleFileChange={handleFileChange}
+        handleRetakeClick={handleRetakeClick}
+        handleSubmitClick={handleSubmitClick}
+        setCapturing={setCapturing}
+        isLoading={isLoading}
+      />
 
       {showParsedData && fields.length > 0 && <ParsedDataDisplay fields={fields} />}
 
