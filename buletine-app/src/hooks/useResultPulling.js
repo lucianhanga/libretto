@@ -6,7 +6,7 @@ const useResultPulling = (accessToken) => {
   const startPullingResult = (id) => {
     console.log("Starting result pulling process...");
     setTimeout(() => {
-      setStatus('pulling');
+      setStatus('pulling 1');
       let attempts = 0;
       const interval = setInterval(async () => {
         console.log(`Attempt ${attempts + 1} to pull result...`);
@@ -39,8 +39,9 @@ const useResultPulling = (accessToken) => {
         }
 
         attempts++;
-      }, 5000); // 5-second interval
-    }, 5000); // Initial 5-second delay
+        setStatus(`pulling ${attempts + 1}`);
+      }, 3000); // 5-second interval
+    }, 3000); // Initial 5-second delay
   };
 
   return {

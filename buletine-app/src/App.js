@@ -35,7 +35,6 @@ const App = () => {
 
   return (
     <div className="container">
-      <h1>React Webcam Capture</h1>
       <AuthenticatedTemplate>
         <AuthenticatedApp
           image={image}
