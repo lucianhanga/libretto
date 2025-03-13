@@ -17,6 +17,14 @@ locals {
   func_app_name = "api-${var.project_name}"
 }
 
+# create the Application Insights resource
+resource "azurerm_application_insights" "app_insights" {
+  name                = "${local.func_app_name}-insights"
+  location            = var.resource_group_location
+  resource_group_name = var.resource_group_name
+  application_type    = "web"
+}
+
 # create the api function app
 resource "azurerm_linux_function_app" "api" {
   name                       = local.func_app_name
@@ -39,7 +47,11 @@ resource "azurerm_linux_function_app" "api" {
   }
 
   app_settings = {
-    "BULETINE_API_CLIENT_SECRET" = azuread_application_password.buletine_api_secret.value
+    "STORAGE_ACCOUNT_NAME" = azurerm_storage_account.st.name,
+    "BULETINE_API_CLIENT_SECRET" = azuread_application_password.buletine_api_secret.value,
+    "DOCUMENT_INTELLIGENCE_ENDPOINT" = azurerm_cognitive_account.document_intelligence.endpoint,
+    "DOCUMENT_INTELLIGENCE_KEY" = azurerm_cognitive_account.document_intelligence.primary_access_key
+    "APPINSIGHTS_INSTRUMENTATIONKEY" = azurerm_application_insights.app_insights.instrumentation_key
   }
 
   auth_settings_v2 {
@@ -61,11 +73,11 @@ resource "azurerm_linux_function_app" "api" {
     type = "SystemAssigned"
   }
 
-
   depends_on = [ 
     azuread_application.buletine_api,
     azurerm_service_plan.function_service_plan,
-    azurerm_storage_account.st
+    azurerm_storage_account.st,
+    azurerm_application_insights.app_insights
   ]
 }
 
