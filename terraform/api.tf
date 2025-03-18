@@ -116,3 +116,7 @@ resource "azurerm_role_assignment" "function_app_cognitive_service_rights" {
     azurerm_linux_function_app.api
   ]
 }
+
+output "api_base_url" {
+  value = azurerm_linux_function_app.api.default_hostname
+}
