@@ -25,14 +25,14 @@ env_development = f"""
 REACT_APP_CLIENT_ID={get_terraform_output('buletine_app_client_id')}
 REACT_APP_TENANT_ID={get_terraform_output('buletine_app_tenant_id')}
 REACT_APP_REDIRECT_URI=http://localhost:3000
-REACT_APP_API_BASE_URL=http://localhost:5000
+REACT_APP_API_BASE_URL=http://localhost:7071/api
 """
 
 env_production = f"""
 REACT_APP_CLIENT_ID={get_terraform_output('buletine_app_client_id')}
 REACT_APP_TENANT_ID={get_terraform_output('buletine_app_tenant_id')}
 REACT_APP_REDIRECT_URI={get_terraform_output('storage_account_primary_web_endpoint')}
-REACT_APP_API_BASE_URL={get_terraform_output('api_base_url')}
+REACT_APP_API_BASE_URL=https://{get_terraform_output('api_base_url')}/api/
 """
 
 # Write to .env.development
