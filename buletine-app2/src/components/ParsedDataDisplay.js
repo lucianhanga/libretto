@@ -90,7 +90,7 @@ const ParsedDataDisplay = ({ result }) => {
 
   return (
     <div>
-      {fields.length > 0 && <h2 className="title">Current Results</h2>}
+      {showResults && fields.length > 0 && <h2 className="title">Current Results</h2>}
       {showResults && fields.length > 0 && (
         <div>
           {/* Display the parsed fields in a table */}
