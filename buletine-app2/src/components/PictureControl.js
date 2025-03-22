@@ -4,7 +4,7 @@ import PictureHolder from './PictureHolder';
 import PictureButtons from './PictureButtons';
 import './PictureControl.css';
 
-const PictureControl = ({ setImageSrc }) => {
+const PictureControl = ({ setImageSrc, setProgress, isPulling }) => {
   const [isCameraOn, setIsCameraOn] = useState(false);
   const [imageSrc, setImageSrcState] = useState(null);
   const webcamRef = useRef(null);
@@ -12,6 +12,7 @@ const PictureControl = ({ setImageSrc }) => {
 
   const handleTakePicture = () => {
     setIsCameraOn(true);
+    setProgress(0); // Reset progress when taking a picture
   };
 
   const handleCapture = () => {
@@ -27,12 +28,14 @@ const PictureControl = ({ setImageSrc }) => {
     reader.onloadend = () => {
       setImageSrc(reader.result);
       setImageSrcState(reader.result);
+      setProgress(0); // Reset progress when loading a picture
     };
     reader.readAsDataURL(file);
   };
 
   const handleLoadPictureClick = () => {
     fileInputRef.current.click();
+    setProgress(0); // Reset progress when clicking to load a picture
   };
 
   return (
@@ -45,7 +48,7 @@ const PictureControl = ({ setImageSrc }) => {
             screenshotFormat="image/jpeg"
             className="webcam"
           />
-          <button className="capture-button" onClick={handleCapture}>Capture</button>
+          <button className="capture-button" onClick={handleCapture} disabled={isPulling}>Capture</button>
         </div>
       ) : (
         <div>
@@ -53,6 +56,7 @@ const PictureControl = ({ setImageSrc }) => {
           <PictureButtons
             onTakePicture={handleTakePicture}
             onLoadPictureClick={handleLoadPictureClick}
+            isPulling={isPulling}
           />
           <input
             type="file"

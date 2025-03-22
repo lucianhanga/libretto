@@ -10,14 +10,15 @@ const Authenticated = () => {
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState("Ready");
   const [imageSrc, setImageSrc] = useState(null);
+  const [isPulling, setIsPulling] = useState(false);
 
   useToken(); // Use the custom hook to acquire the token
 
   return (
     <div>
       <Profile />
-      <PictureControl setImageSrc={setImageSrc} />
-      <SubmitButton imageSrc={imageSrc} setStatus={setStatus} setProgress={setProgress} />
+      <PictureControl setImageSrc={setImageSrc} setProgress={setProgress} isPulling={isPulling} />
+      <SubmitButton imageSrc={imageSrc} setStatus={setStatus} setProgress={setProgress} setIsPulling={setIsPulling} isPulling={isPulling} />
       <ProgressBar progress={progress} />
       {/* Add more authenticated components here */}
       <StatusBar status={status} />

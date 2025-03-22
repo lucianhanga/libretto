@@ -22,3 +22,8 @@
 .button-container button:hover {
   background-color: #45a049; /* Darker green on hover */
 }
+
+.button-container button:disabled {
+  background-color: #cccccc; /* Gray background when disabled */
+  cursor: not-allowed;
+}
