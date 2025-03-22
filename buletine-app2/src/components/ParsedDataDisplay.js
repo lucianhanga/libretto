@@ -90,6 +90,7 @@ const ParsedDataDisplay = ({ result }) => {
 
   return (
     <div>
+      <h2 className="title">Current Results</h2>
       {showResults && fields.length > 0 && (
         <div>
           {/* Display the parsed fields in a table */}
@@ -135,12 +136,14 @@ const ParsedDataDisplay = ({ result }) => {
       )}
 
       {!showResults && fields.length > 0 && (
-        <button
-          onClick={() => setShowResults(true)}
-          className="show-button"
-        >
-          Show
-        </button>
+        <div className="show-button-container">
+          <button
+            onClick={() => setShowResults(true)}
+            className="show-button"
+          >
+            Show
+          </button>
+        </div>
       )}
     </div>
   );

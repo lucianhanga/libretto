@@ -54,3 +54,14 @@
 .show-button {
   background-color: #008CBA; /* Blue */
 }
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 16px; /* Make the font size smaller */
+}
+
+.show-button-container {
+  text-align: center;
+  margin-top: 20px;
+}

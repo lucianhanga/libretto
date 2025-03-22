@@ -24,7 +24,7 @@ const Authenticated = () => {
       <ProgressBar progress={progress} />
       <ParsedDataDisplay result={result} />
       {/* Add more authenticated components here */}
-      <StatusBar status={status} />
+      <StatusBar status={status} style={{ marginTop: '20px' }} />
     </div>
   );
 };
