@@ -43,7 +43,7 @@ resource "azurerm_linux_function_app" "api" {
     cors {
       allowed_origins     = [
         "http://localhost:3000", # for local development only
-        replace(azurerm_storage_account.st.primary_web_endpoint, "/$", "") # for the production environment
+        substr(azurerm_storage_account.st.primary_web_endpoint, 0, length(azurerm_storage_account.st.primary_web_endpoint) - 1)
       ]
       support_credentials = true
     }
