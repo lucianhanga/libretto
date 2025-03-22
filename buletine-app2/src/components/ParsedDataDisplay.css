@@ -8,11 +8,13 @@
 .parsed-data-table td {
   border: 1px solid #ddd;
   padding: 8px;
+  font-size: 12px; /* Use a smaller font size */
 }
 
 .parsed-data-table th {
   background-color: #f2f2f2;
   text-align: left;
+  font-size: 12px; /* Use a smaller font size */
 }
 
 .tooltip {
@@ -24,6 +26,7 @@
   top: 10px;
   right: 10px;
   border-radius: 3px;
+  font-size: 12px; /* Use a smaller font size */
 }
 
 .button-container {
@@ -40,6 +43,7 @@
   border: none;
   cursor: pointer;
   border-radius: 4px;
+  font-size: 12px; /* Use a smaller font size */
 }
 
 .save-button.disabled {
@@ -58,7 +62,7 @@
 .title {
   text-align: center;
   margin-bottom: 20px;
-  font-size: 16px; /* Make the font size smaller */
+  font-size: 12px; /* Make the font size smaller */
 }
 
 .show-button-container {
