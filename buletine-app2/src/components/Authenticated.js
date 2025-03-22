@@ -21,9 +21,13 @@ const Authenticated = () => {
   useToken(); // Use the custom hook to acquire the token
 
   const handleShowCSV = () => {
-    const data = localStorage.getItem("nameDisplayData") || '';
-    setCsvData(data);
-    setShowCSV(true);
+    if (showCSV) {
+      setShowCSV(false);
+    } else {
+      const data = localStorage.getItem("nameDisplayData") || '';
+      setCsvData(data);
+      setShowCSV(true);
+    }
   };
 
   const handleClearCSV = () => {
@@ -50,7 +54,7 @@ const Authenticated = () => {
       <SubmitButton imageSrc={imageSrc} setStatus={setStatus} setProgress={setProgress} setIsPulling={setIsPulling} setResult={setResult} isPulling={isPulling} />
       <ProgressBar progress={progress} />
       <ParsedDataDisplay result={result} />
-      <CSVButtons showCSV={handleShowCSV} clearCSV={handleClearCSV} downloadCSV={handleDownloadCSV} />
+      <CSVButtons showCSV={handleShowCSV} clearCSV={handleClearCSV} downloadCSV={handleDownloadCSV} isCSVShown={showCSV} />
       {showCSV && <CSVDisplay csvData={csvData} />}
       {/* Add more authenticated components here */}
       <StatusBar status={status} style={{ marginTop: '20px' }} />
