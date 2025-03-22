@@ -13,18 +13,12 @@ const Authenticated = () => {
 
   useToken(); // Use the custom hook to acquire the token
 
-  // This is just a placeholder for updating progress. Replace it with actual logic.
-  const simulateProgress = () => {
-    setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 10));
-  };
-
   return (
     <div>
       <Profile />
       <PictureControl setImageSrc={setImageSrc} />
-      <SubmitButton imageSrc={imageSrc} setStatus={setStatus} />
+      <SubmitButton imageSrc={imageSrc} setStatus={setStatus} setProgress={setProgress} />
       <ProgressBar progress={progress} />
-      <button onClick={simulateProgress}>Simulate Progress</button>
       {/* Add more authenticated components here */}
       <StatusBar status={status} />
     </div>
