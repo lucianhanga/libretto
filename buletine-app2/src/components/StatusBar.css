@@ -1,0 +1,10 @@
+.status-bar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #dcedc8; /* Very light green background */
+  text-align: center;
+  padding: 10px;
+  color: black; /* Black text color */
+  font-size: 14px;
+}

@@ -1,0 +1,70 @@
+import React, { useState, useRef } from 'react';
+import Webcam from 'react-webcam';
+import PictureHolder from './PictureHolder';
+import PictureButtons from './PictureButtons';
+import './PictureControl.css';
+
+const PictureControl = ({ setImageSrc }) => {
+  const [isCameraOn, setIsCameraOn] = useState(false);
+  const [imageSrc, setImageSrcState] = useState(null);
+  const webcamRef = useRef(null);
+  const fileInputRef = useRef(null);
+
+  const handleTakePicture = () => {
+    setIsCameraOn(true);
+  };
+
+  const handleCapture = () => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    setImageSrc(imageSrc);
+    setImageSrcState(imageSrc);
+    setIsCameraOn(false);
+  };
+
+  const handleLoadPicture = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImageSrc(reader.result);
+      setImageSrcState(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleLoadPictureClick = () => {
+    fileInputRef.current.click();
+  };
+
+  return (
+    <div className="picture-control">
+      {isCameraOn ? (
+        <div className="webcam-container">
+          <Webcam
+            audio={false}
+            ref={webcamRef}
+            screenshotFormat="image/jpeg"
+            className="webcam"
+          />
+          <button className="capture-button" onClick={handleCapture}>Capture</button>
+        </div>
+      ) : (
+        <div>
+          <PictureHolder imageSrc={imageSrc} />
+          <PictureButtons
+            onTakePicture={handleTakePicture}
+            onLoadPictureClick={handleLoadPictureClick}
+          />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleLoadPicture}
+            ref={fileInputRef}
+            style={{ display: 'none' }}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default PictureControl;
