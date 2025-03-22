@@ -3,7 +3,7 @@ import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../azureAuth/authConfig";
 import './SubmitButton.css';
 
-const SubmitButton = ({ imageSrc, setStatus, setProgress, setIsPulling, isPulling }) => {
+const SubmitButton = ({ imageSrc, setStatus, setProgress, setIsPulling, setResult, isPulling }) => {
   const { instance, accounts } = useMsal();
   const [accessToken, setAccessToken] = useState(null);
 
@@ -52,6 +52,7 @@ const SubmitButton = ({ imageSrc, setStatus, setProgress, setIsPulling, isPullin
         if (response.ok) {
           const result = await response.json();
           console.log("Results:", result);
+          setResult(result); // Set the result state with the pulled results
           setStatus("Results Pulled Successfully");
           setProgress(100); // Update progress to 100% when results are pulled successfully
           setTimeout(() => setProgress(0), 2000); // Reset progress to 0% after 2 seconds
