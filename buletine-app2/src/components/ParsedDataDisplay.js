@@ -2,13 +2,12 @@ import React, { useCallback, useState, useEffect } from 'react';
 import './ParsedDataDisplay.css';
 import { romanianToLatin, replaceNewLineWithDash, extractDates } from '../Utils';
 
-const ParsedDataDisplay = ({ result }) => {
-  const [saved, setSaved] = useState(false); // Track if data has been saved
+const ParsedDataDisplay = ({ result, clearResults, saved, setSaved }) => {
   const [tooltip, setTooltip] = useState(null); // Track the tooltip message
   const [fields, setFields] = useState([]); // Track the parsed fields
   const [showResults, setShowResults] = useState(false); // Track whether to show results
 
-  const parseAndSaveResult = useCallback((result) => {
+  const parseResult = useCallback((result) => {
     console.log("Incoming result:", result); // Log the incoming result
 
     let parsedResult;
@@ -52,13 +51,10 @@ const ParsedDataDisplay = ({ result }) => {
     // Log the extracted fields
     console.log("Extracted fields:", extractedFields);
 
-    // Save data to local storage in CSV format
-    saveToLocalStorage(extractedFields);
-
     // Set the parsed fields to state
     setFields(extractedFields);
     setShowResults(true); // Show results when data is received
-  }, [saved]);
+  }, []);
 
   const saveToLocalStorage = (fields) => {
     if (!saved && fields.length > 0) {
@@ -76,9 +72,9 @@ const ParsedDataDisplay = ({ result }) => {
 
   useEffect(() => {
     if (result) {
-      parseAndSaveResult(result);
+      parseResult(result);
     }
-  }, [result, parseAndSaveResult]);
+  }, [result, parseResult]);
 
   // Copy value to clipboard and show tooltip
   const handleDoubleClick = (value) => {

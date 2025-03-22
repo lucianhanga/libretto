@@ -17,6 +17,7 @@ const Authenticated = () => {
   const [result, setResult] = useState([]);
   const [csvData, setCsvData] = useState('');
   const [showCSV, setShowCSV] = useState(false);
+  const [saved, setSaved] = useState(false); // Track if data has been saved
 
   useToken(); // Use the custom hook to acquire the token
 
@@ -49,6 +50,7 @@ const Authenticated = () => {
 
   const clearResults = () => {
     setResult([]);
+    setSaved(false); // Clear the saved status
   };
 
   return (
@@ -57,7 +59,7 @@ const Authenticated = () => {
       <PictureControl setImageSrc={setImageSrc} setProgress={setProgress} isPulling={isPulling} clearResults={clearResults} />
       <SubmitButton imageSrc={imageSrc} setStatus={setStatus} setProgress={setProgress} setIsPulling={setIsPulling} setResult={setResult} isPulling={isPulling} clearResults={clearResults} />
       <ProgressBar progress={progress} />
-      <ParsedDataDisplay result={result} />
+      <ParsedDataDisplay result={result} clearResults={clearResults} saved={saved} setSaved={setSaved} />
       <CSVButtons showCSV={handleShowCSV} clearCSV={handleClearCSV} downloadCSV={handleDownloadCSV} isCSVShown={showCSV} />
       {showCSV && <CSVDisplay csvData={csvData} />}
       {/* Add more authenticated components here */}
