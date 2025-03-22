@@ -17,13 +17,13 @@ locals {
   func_app_name = "api-${var.project_name}"
 }
 
-# create the Application Insights resource
-resource "azurerm_application_insights" "app_insights" {
-  name                = "${local.func_app_name}-insights"
-  location            = var.resource_group_location
-  resource_group_name = var.resource_group_name
-  application_type    = "web"
-}
+# # create the Application Insights resource
+# resource "azurerm_application_insights" "app_insights" {
+#   name                = "${local.func_app_name}-insights"
+#   location            = var.resource_group_location
+#   resource_group_name = var.resource_group_name
+#   application_type    = "web"
+# }
 
 # create the api function app
 resource "azurerm_linux_function_app" "api" {
@@ -41,7 +41,10 @@ resource "azurerm_linux_function_app" "api" {
     }
 
     cors {
-      allowed_origins     = ["http://localhost:3000"]
+      allowed_origins     = [
+        "http://localhost:3000", # for local development only
+        azurerm_storage_account.st.primary_web_endpoint # for the production environment
+      ]
       support_credentials = true
     }
   }
@@ -51,7 +54,7 @@ resource "azurerm_linux_function_app" "api" {
     "BULETINE_API_CLIENT_SECRET" = azuread_application_password.buletine_api_secret.value,
     "DOCUMENT_INTELLIGENCE_ENDPOINT" = azurerm_cognitive_account.document_intelligence.endpoint,
     "DOCUMENT_INTELLIGENCE_KEY" = azurerm_cognitive_account.document_intelligence.primary_access_key
-    "APPINSIGHTS_INSTRUMENTATIONKEY" = azurerm_application_insights.app_insights.instrumentation_key
+#    "APPINSIGHTS_INSTRUMENTATIONKEY" = azurerm_application_insights.app_insights.instrumentation_key
   }
 
   auth_settings_v2 {
@@ -76,8 +79,8 @@ resource "azurerm_linux_function_app" "api" {
   depends_on = [ 
     azuread_application.buletine_api,
     azurerm_service_plan.function_service_plan,
-    azurerm_storage_account.st,
-    azurerm_application_insights.app_insights
+    azurerm_storage_account.st
+#    azurerm_application_insights.app_insights
   ]
 }
 
