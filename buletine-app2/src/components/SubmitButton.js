@@ -42,10 +42,11 @@ const SubmitButton = ({ imageSrc, setStatus, setProgress, setIsPulling, setResul
     await delay(5000); // Initial delay before starting to pull results
     for (let i = 0; i < attempts; i++) {
       try {
+        const token = accessToken || await acquireToken();
         const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/pullresults?guid=${guid}`, {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${accessToken}`
+            'Authorization': `Bearer ${token}`
           }
         });
 
@@ -78,10 +79,11 @@ const SubmitButton = ({ imageSrc, setStatus, setProgress, setIsPulling, setResul
     setStatus("Sending");
     setProgress(5); // Update progress to 5% when sending starts
     try {
+      const token = accessToken || await acquireToken();
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/uploadimage`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${accessToken}`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(requestBody)
