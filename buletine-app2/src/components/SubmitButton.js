@@ -3,7 +3,7 @@ import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../azureAuth/authConfig";
 import './SubmitButton.css';
 
-const SubmitButton = ({ imageSrc, setStatus, setProgress, setIsPulling, setResult, isPulling }) => {
+const SubmitButton = ({ imageSrc, setStatus, setProgress, setIsPulling, setResult, isPulling, clearResults }) => {
   const { instance, accounts } = useMsal();
   const [accessToken, setAccessToken] = useState(null);
 
@@ -106,6 +106,7 @@ const SubmitButton = ({ imageSrc, setStatus, setProgress, setIsPulling, setResul
 
   const handleSubmit = async () => {
     try {
+      clearResults(); // Clear the current results
       const token = accessToken || await acquireToken();
       const requestBody = createRequestBody(imageSrc);
       await submitPhoto(requestBody);

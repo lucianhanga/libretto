@@ -47,11 +47,15 @@ const Authenticated = () => {
     URL.revokeObjectURL(url);
   };
 
+  const clearResults = () => {
+    setResult([]);
+  };
+
   return (
     <div>
       <Profile />
-      <PictureControl setImageSrc={setImageSrc} setProgress={setProgress} isPulling={isPulling} />
-      <SubmitButton imageSrc={imageSrc} setStatus={setStatus} setProgress={setProgress} setIsPulling={setIsPulling} setResult={setResult} isPulling={isPulling} />
+      <PictureControl setImageSrc={setImageSrc} setProgress={setProgress} isPulling={isPulling} clearResults={clearResults} />
+      <SubmitButton imageSrc={imageSrc} setStatus={setStatus} setProgress={setProgress} setIsPulling={setIsPulling} setResult={setResult} isPulling={isPulling} clearResults={clearResults} />
       <ProgressBar progress={progress} />
       <ParsedDataDisplay result={result} />
       <CSVButtons showCSV={handleShowCSV} clearCSV={handleClearCSV} downloadCSV={handleDownloadCSV} isCSVShown={showCSV} />
