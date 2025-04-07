@@ -39,5 +39,5 @@ export const msalConfig = {
 };
 
 export const loginRequest = {
-  scopes: ["api://blondubuletine/user_impersonation"],
+  scopes: ["api://libretto/user_impersonation"],
 };
