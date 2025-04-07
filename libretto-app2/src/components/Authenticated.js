@@ -56,11 +56,34 @@ const Authenticated = () => {
   return (
     <div>
       <Profile />
-      <PictureControl setImageSrc={setImageSrc} setProgress={setProgress} isPulling={isPulling} clearResults={clearResults} />
-      <SubmitButton imageSrc={imageSrc} setStatus={setStatus} setProgress={setProgress} setIsPulling={setIsPulling} setResult={setResult} isPulling={isPulling} clearResults={clearResults} />
+      <PictureControl
+        setImageSrc={setImageSrc}
+        setProgress={setProgress}
+        isPulling={isPulling}
+        clearResults={clearResults} // Ensure this is passed
+      />
+      <SubmitButton
+        imageSrc={imageSrc}
+        setStatus={setStatus}
+        setProgress={setProgress}
+        setIsPulling={setIsPulling}
+        setResult={setResult}
+        isPulling={isPulling}
+        clearResults={clearResults} // Ensure this is passed
+      />
       <ProgressBar progress={progress} />
-      <ParsedDataDisplay result={result} clearResults={clearResults} saved={saved} setSaved={setSaved} />
-      <CSVButtons showCSV={handleShowCSV} clearCSV={handleClearCSV} downloadCSV={handleDownloadCSV} isCSVShown={showCSV} />
+      <ParsedDataDisplay 
+        result={result} 
+        clearResults={clearResults} 
+        saved={saved} 
+        setSaved={setSaved} 
+      />
+      <CSVButtons 
+        showCSV={handleShowCSV}
+        clearCSV={handleClearCSV}
+        downloadCSV={handleDownloadCSV} 
+        isCSVShown={showCSV} 
+      />
       {showCSV && <CSVDisplay csvData={csvData} />}
       {/* Add more authenticated components here */}
       <StatusBar status={status} style={{ marginTop: '20px' }} />
