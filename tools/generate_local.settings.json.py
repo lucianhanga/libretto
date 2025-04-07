@@ -31,15 +31,15 @@ settings = {
         "DOCUMENT_INTELLIGENCE_ENDPOINT": get_terraform_output("document_intelligence_endpoint"),
         "DOCUMENT_INTELLIGENCE_KEY": get_terraform_output("document_intelligence_key"),
         "REQUIRED_GROUP_ID": "c1b83efb-4637-4ca0-9a7e-13e069be8ef5",
-        "BULETINE_API_CLIENT_ID": get_terraform_output("buletine_api_client_id"),
-        "BULETINE_API_CLIENT_SECRET": get_terraform_output("buletine_api_client_secret"),
-        "BULETINE_API_TENANT_ID": get_terraform_output("buletine_api_tenant_id"),
+        "LIBRETTO_API_CLIENT_ID": get_terraform_output("libretto_api_client_id"),
+        "LIBRETTO_API_CLIENT_SECRET": get_terraform_output("libretto_api_client_secret"),
+        "LIBRETTO_API_TENANT_ID": get_terraform_output("libretto_api_tenant_id"),
         "STORAGE_ACCOUNT_PRIMARY_WEB_ENDPOINT": get_terraform_output("storage_account_primary_web_endpoint")
     }
 }
 
 # Write to local.settings.json
-with open("../buletine-api/local.settings.json", "w") as f:
+with open("../libretto-api/local.settings.json", "w") as f:
     json.dump(settings, f, indent=4)
 
 print("✅ local.settings.json file has been successfully generated!")
