@@ -1,13 +1,18 @@
 #!/usr/bin/env python3
 import json
 import subprocess
+from pathlib import Path
+
+# Paths relative to the project main folder
+TERRAFORM_DIR = "./terraform"
+LOCAL_SETTINGS_PATH = "./libretto-api/local.settings.json"
 
 def get_terraform_output(output_name):
     """Fetch raw Terraform output value."""
     try:
         print(f"Fetching Terraform output for {output_name}...")
         result = subprocess.run(
-            ["terraform", "-chdir=../terraform", "output", "-raw", output_name],
+            ["terraform", f"-chdir={TERRAFORM_DIR}", "output", "-raw", output_name],
             capture_output=True,
             text=True,
             check=True
@@ -17,14 +22,15 @@ def get_terraform_output(output_name):
         print(f"Successfully fetched Terraform output for {output_name}: {output_value}")
         return output_value
     except subprocess.CalledProcessError as e:
-        print(f"⚠ Warning: Unable to fetch Terraform output for {output_name}. Error: {e}")
+        print(f"\033[1;31m❌ Error: Unable to fetch Terraform output for {output_name}. Error: {e}\033[0m")
+        print("\033[1;31mEnsure that the Terraform state is initialized by running 'terraform init' in the ./terraform folder.\033[0m")
         return ""
 
 # Generate local.settings.json directly
 settings = {
     "IsEncrypted": False,
     "Values": {
-        "AzureWebJobsStorage": f"DefaultEndpointsProtocol=https;AccountName={get_terraform_output('storage_account_name')};AccountKey={get_terraform_output('storage_account_key')};EndpointSuffix=core.windows.net",  # Replace with actual key
+        "AzureWebJobsStorage": f"DefaultEndpointsProtocol=https;AccountName={get_terraform_output('storage_account_name')};AccountKey={get_terraform_output('storage_account_key')};EndpointSuffix=core.windows.net",
         "AzureWebJobs.ImageAvailable.Disabled": "true",
         "FUNCTIONS_WORKER_RUNTIME": "python",
         "STORAGE_ACCOUNT_NAME": get_terraform_output("storage_account_name"),
@@ -39,7 +45,10 @@ settings = {
 }
 
 # Write to local.settings.json
-with open("../libretto-api/local.settings.json", "w") as f:
+local_settings_path = Path(LOCAL_SETTINGS_PATH)
+local_settings_path.parent.mkdir(parents=True, exist_ok=True)  # Ensure the directory exists
+
+with open(local_settings_path, "w") as f:
     json.dump(settings, f, indent=4)
 
-print("✅ local.settings.json file has been successfully generated!")
+print(f"✅ local.settings.json file has been successfully generated at {LOCAL_SETTINGS_PATH}!")

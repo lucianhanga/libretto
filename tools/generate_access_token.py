@@ -8,7 +8,7 @@ def get_terraform_output(output_name):
     try:
         print(f"Fetching Terraform output for {output_name}...")
         result = subprocess.run(
-            ["terraform", "-chdir=../terraform", "output", "-raw", output_name],
+            ["terraform", "-chdir=./terraform", "output", "-raw", output_name],
             capture_output=True,
             text=True,
             check=True
@@ -23,10 +23,11 @@ def get_terraform_output(output_name):
 
 def generate_access_token():
     """Fetch an access token using Azure AD OAuth2."""
-    tenant_id = get_terraform_output("buletine_api_tenant_id")
-    client_id = get_terraform_output("buletine_api_client_id")
-    client_secret = get_terraform_output("buletine_api_client_secret")
-    scope = f"api://{client_id}/.default"
+    tenant_id = get_terraform_output("libretto_api_tenant_id")
+    client_id = get_terraform_output("libretto_api_client_id")
+    client_secret = get_terraform_output("libretto_api_client_secret")
+    libretto_api_uri = get_terraform_output("libretto_api_uri")  # Fetch the correct API URI
+    scope = f"{libretto_api_uri}/.default"  # Use the API URI for the scope
 
     url = f"https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token"
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
