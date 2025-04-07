@@ -6,13 +6,13 @@ terraform {
     }
   }
 
-  backend "azurerm" {
-    resource_group_name  = "blondubuletine_rg"
-    storage_account_name = "terraformstate1234567890"
-    container_name       = "tfstate"
-    key                  = "terraform.tfstate"
+    backend "azurerm" {
+      resource_group_name  = "libretto-rg"
+      storage_account_name = "terraform0abc"
+      container_name       = "tfstate"
+      key                  = "terraform.tfstate"
+    }
   }
-}
 
 provider "azurerm" {
   features {} 
@@ -20,8 +20,3 @@ provider "azurerm" {
 }
 
 data "azurerm_client_config" "current" {}
-
-# resource "azurerm_resource_group" "rg" {
-#   name     = var.resource_group_name
-#   location = var.resource_group_location
-# }

@@ -287,6 +287,8 @@ tenant_id            = "$TENANT_ID"
 subscription_id      = "$SUBSCRIPTION_ID"
 resource_group_name  = "$RESOURCE_GROUP_NAME"
 resource_group_location = "$LOCATION"
+project_name         = "$APP_NAME"
+subfix               = "$POSTFIX"
 EOF
 
 # Backend block

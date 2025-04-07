@@ -1,6 +1,6 @@
 # Register the application in Azure AD for the React app
-resource "azuread_application" "buletine_app" {
-  display_name = "Buletine App"
+resource "azuread_application" "libretto_app" {
+  display_name = "Libretto App"
 
   single_page_application {
     redirect_uris = [
@@ -20,7 +20,7 @@ resource "azuread_application" "buletine_app" {
   }
 
   required_resource_access {
-    resource_app_id = azuread_application.buletine_api.client_id
+    resource_app_id = azuread_application.libretto_api.client_id
     resource_access {
       id   = "d890bc22-7bf0-435a-bc11-98b4cd6baf7c"
       type = "Scope"
@@ -32,16 +32,16 @@ resource "azuread_application" "buletine_app" {
 }
 
 # Create a service principal for the application
-resource "azuread_service_principal" "buletine_app_sp" {
-  client_id = azuread_application.buletine_app.client_id
-  depends_on = [ azuread_application.buletine_app ]
+resource "azuread_service_principal" "libretto_app_sp" {
+  client_id = azuread_application.libretto_app.client_id
+  depends_on = [ azuread_application.libretto_app ]
 }
 
 # Output the client ID and tenant ID
-output "buletine_app_client_id" {
-  value = azuread_application.buletine_app.client_id
+output "libretto_app_client_id" {
+  value = azuread_application.libretto_app.client_id
 }
 
-output "buletine_app_tenant_id" {
+output "libretto_app_tenant_id" {
   value = data.azurerm_client_config.current.tenant_id
 }

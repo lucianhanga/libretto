@@ -1,6 +1,6 @@
 # Register the application in Azure AD
-resource "azuread_application" "buletine_api" {
-  display_name = "Buletine API"
+resource "azuread_application" "libretto_api" {
+  display_name = "Libretto API"
 
   identifier_uris = [
     "api://${var.project_name}"
@@ -22,7 +22,7 @@ resource "azuread_application" "buletine_api" {
       user_consent_description   = "Call the exposed API"
       user_consent_display_name  = "API Calls"
       value                      = "user_impersonation"
-      id = "d890bc22-7bf0-435a-bc11-98b4cd6baf7c"
+      id = "d890bc33-7ba0-435a-bca1-98b4cd6baf8c"
       type = "User"
       enabled = true
     }    
@@ -30,59 +30,59 @@ resource "azuread_application" "buletine_api" {
 }
 
 resource "azuread_application_pre_authorized" "azurecli" {
-  application_id = azuread_application.buletine_api.id
+  application_id = azuread_application.libretto_api.id
   authorized_client_id = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
 
   permission_ids = [
-    "d890bc22-7bf0-435a-bc11-98b4cd6baf7c"
+    "d890bc33-7ba0-435a-bca1-98b4cd6baf8c"
   ]
 
-  depends_on = [ azuread_application.buletine_api ]
+  depends_on = [ azuread_application.libretto_api ]
 }
 #  this is required only if the function calls its own API
 # 
-# resource "azuread_application_api_access" "buletine_api_api" {
-#   application_id = azuread_application.buletine_api.id
-#   api_client_id = azuread_application.buletine_api.client_id
+# resource "azuread_application_api_access" "libretto_api_api" {
+#   application_id = azuread_application.libretto_api.id
+#   api_client_id = azuread_application.libretto_api.client_id
 
 #   scope_ids = [
 #     "0040f80f-bb46-4ca6-9b02-4bd92b4a974d"
 #   ]
   
-#   depends_on = [ azuread_application.buletine_api ]
+#   depends_on = [ azuread_application.libretto_api ]
 # }
 
 # Create a service principal for the application
-resource "azuread_service_principal" "buletine_api_sp" {
-  client_id = azuread_application.buletine_api.client_id
+resource "azuread_service_principal" "libretto_api_sp" {
+  client_id = azuread_application.libretto_api.client_id
 
-  depends_on = [ azuread_application.buletine_api ]
+  depends_on = [ azuread_application.libretto_api ]
 }
 
 # Create a client secret for the application
-resource "azuread_application_password" "buletine_api_secret" {
-  application_id = azuread_application.buletine_api.id
-  display_name          = "Buletine API Secret"
+resource "azuread_application_password" "libretto_api_secret" {
+  application_id = azuread_application.libretto_api.id
+  display_name          = "libretto API Secret"
   end_date              = "2025-10-10T00:00:00Z" # 1 year from now
 
-  depends_on = [ azuread_application.buletine_api ]
+  depends_on = [ azuread_application.libretto_api ]
 }
 
 # Output the client ID and secret
-output "buletine_api_client_id" {
-  value = azuread_application.buletine_api.client_id
+output "libretto_api_client_id" {
+  value = azuread_application.libretto_api.client_id
 }
 
-output "buletine_api_client_secret" {
-  value = azuread_application_password.buletine_api_secret.value
+output "libretto_api_client_secret" {
+  value = azuread_application_password.libretto_api_secret.value
   sensitive = true
 }
 
-output "buletine_api_tenant_id" {
+output "libretto_api_tenant_id" {
   value = data.azurerm_client_config.current.tenant_id
 }
 
 # output the URI
-output "buletine_api_uri" {
+output "libretto_api_uri" {
   value = "api://${var.project_name}"
 }

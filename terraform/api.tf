@@ -51,7 +51,7 @@ resource "azurerm_linux_function_app" "api" {
 
   app_settings = {
     "STORAGE_ACCOUNT_NAME" = azurerm_storage_account.st.name,
-    "BULETINE_API_CLIENT_SECRET" = azuread_application_password.buletine_api_secret.value,
+    "LIBRETTO_API_CLIENT_SECRET" = azuread_application_password.libretto_api_secret.value,
     "DOCUMENT_INTELLIGENCE_ENDPOINT" = azurerm_cognitive_account.document_intelligence.endpoint,
     "DOCUMENT_INTELLIGENCE_KEY" = azurerm_cognitive_account.document_intelligence.primary_access_key
 #    "APPINSIGHTS_INSTRUMENTATIONKEY" = azurerm_application_insights.app_insights.instrumentation_key
@@ -62,11 +62,11 @@ resource "azurerm_linux_function_app" "api" {
     require_authentication = true
     unauthenticated_action = "Return401"
     active_directory_v2 {
-      client_id = azuread_application.buletine_api.client_id
+      client_id = azuread_application.libretto_api.client_id
       tenant_auth_endpoint = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0"
-      client_secret_setting_name = "BULETINE_API_CLIENT_SECRET"
+      client_secret_setting_name = "LIBRETTO_API_CLIENT_SECRET"
 
-      allowed_audiences = azuread_application.buletine_api.identifier_uris
+      allowed_audiences = azuread_application.libretto_api.identifier_uris
     }
     login {
     }
@@ -77,7 +77,7 @@ resource "azurerm_linux_function_app" "api" {
   }
 
   depends_on = [ 
-    azuread_application.buletine_api,
+    azuread_application.libretto_api,
     azurerm_service_plan.function_service_plan,
     azurerm_storage_account.st
 #    azurerm_application_insights.app_insights
