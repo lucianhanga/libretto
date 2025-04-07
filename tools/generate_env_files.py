@@ -7,7 +7,7 @@ def get_terraform_output(output_name):
     try:
         print(f"Fetching Terraform output for {output_name}...")
         result = subprocess.run(
-            ["terraform", "-chdir=../terraform", "output", "-raw", output_name],
+            ["terraform", "-chdir=./terraform", "output", "-raw", output_name],
             capture_output=True,
             text=True,
             check=True
@@ -36,11 +36,11 @@ REACT_APP_API_BASE_URL=https://{get_terraform_output('api_base_url')}/api/
 """
 
 # Write to .env.development
-with open("../libretto-app/.env.development", "w") as f:
+with open("./libretto-app2/.env.development", "w") as f:
     f.write(env_development.strip())
 
 # Write to .env.production
-with open("../libretto-app/.env.production", "w") as f:
+with open("./libretto-app2/.env.production", "w") as f:
     f.write(env_production.strip())
 
 print("✅ .env.development and .env.production files have been successfully generated!")
