@@ -6,7 +6,7 @@ set -euo pipefail
 APP_NAME=""
 LOCATION="westeurope"
 CONTAINER_NAME="tfstate"
-TFVARS_FILE="../terraform/terraform.tfvars"
+TFVARS_FILE="$(dirname "$0")/../terraform/terraform.tfvars" # Adjusted to be relative to the script's location
 
 # Default flags
 DRY_RUN=true
@@ -126,7 +126,7 @@ if [[ -z "$POSTFIX" ]]; then
   error_exit "Missing required option: --postfix <name>"
 fi
 
-STORAGE_ACCOUNT_NAME="footerraform${POSTFIX,,}" # lowercase enforced
+STORAGE_ACCOUNT_NAME="terraform${POSTFIX,,}" # lowercase enforced
 SP_DISPLAY_NAME="${APP_NAME} SP"
 SP_SCOPE="/subscriptions/$(az account show --query id -o tsv)/resourceGroups/$RESOURCE_GROUP_NAME"
 
