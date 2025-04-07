@@ -10,3 +10,4 @@ __azurite_db_queue_extent__.json
 __azurite_db_table__.json
 buletine-api/local.settings.json.old
 tools/*.png
+test.json
