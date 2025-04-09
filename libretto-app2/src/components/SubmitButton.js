@@ -50,10 +50,16 @@ const SubmitButton = ({ imageSrc, setStatus, setProgress, setIsPulling, setResul
           }
         });
 
+        console.log("API Response:", response); // Log the raw response
+
         if (response.ok) {
           const result = await response.json();
-          console.log("Results:", result);
-          setResult(result); // Set the result state with the pulled results
+          console.log("Parsed Result:", result); // Log the parsed result
+
+          const docu =  JSON.parse(result.Document) || {};
+          console.log("Document:", docu); // Log the Document field
+
+          setResult(docu); // Set the result state with the parsed results
           setStatus("Results Pulled Successfully");
           setProgress(100); // Update progress to 100% when results are pulled successfully
           setTimeout(() => setProgress(0), 2000); // Reset progress to 0% after 2 seconds

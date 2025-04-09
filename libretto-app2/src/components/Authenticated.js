@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Profile from './Profile';
 import StatusBar from './StatusBar';
 import ProgressBar from './ProgressBar';
@@ -12,12 +12,17 @@ const Authenticated = () => {
   const [status, setStatus] = useState("Ready");
   const [imageSrc, setImageSrc] = useState(null);
   const [isPulling, setIsPulling] = useState(false);
-  const [result, setResult] = useState([]);
+  const [result, setResult] = useState({});
 
   useToken(); // Use the custom hook to acquire the token
 
+  useEffect(() => {
+    console.log("Updated result in Authenticated:", result);
+  }, [result]);
+
   const clearResults = () => {
-    setResult([]);
+    console.log("Clearing results");
+    setResult({});
   };
 
   return (
@@ -39,7 +44,7 @@ const Authenticated = () => {
         clearResults={clearResults} // Passed here
       />
       <ProgressBar progress={progress} />
-      <ResultsDisplay results={result} /> {/* Add the new component */}
+      <ResultsDisplay result={result} /> {/* Add the new component */}
       <StatusBar status={status} style={{ marginTop: '20px' }} />
     </div>
   );

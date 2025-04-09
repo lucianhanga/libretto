@@ -2,7 +2,11 @@ import React from 'react';
 import './ResultsDisplay.css';
 
 const ResultsDisplay = ({ result }) => {
-  if (!result || !result.analyzeResult || !result.analyzeResult.paragraphs) {
+  console.log("Received result in ResultsDisplay:", result);
+
+  // Ensure the result and its Document field are valid
+  if (!result ||  !result.analyzeResult || !result.analyzeResult.paragraphs) {
+    console.error("Invalid result structure:", result);
     return <div className="results-display">No results to display.</div>;
   }
 
