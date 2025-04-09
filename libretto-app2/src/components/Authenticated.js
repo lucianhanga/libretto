@@ -4,9 +4,6 @@ import StatusBar from './StatusBar';
 import ProgressBar from './ProgressBar';
 import PictureControl from './PictureControl';
 import SubmitButton from './SubmitButton';
-import ParsedDataDisplay from './ParsedDataDisplay';
-import CSVButtons from './CSVButtons';
-import CSVDisplay from './CSVDisplay';
 import useToken from '../hooks/useToken';
 
 const Authenticated = () => {
@@ -72,19 +69,6 @@ const Authenticated = () => {
         clearResults={clearResults} // Passed here
       />
       <ProgressBar progress={progress} />
-      <ParsedDataDisplay 
-        result={result} 
-        clearResults={clearResults} // Passed here
-        saved={saved} 
-        setSaved={setSaved} 
-      />
-      <CSVButtons 
-        showCSV={handleShowCSV}
-        clearCSV={handleClearCSV}
-        downloadCSV={handleDownloadCSV} 
-        isCSVShown={showCSV} 
-      />
-      {showCSV && <CSVDisplay csvData={csvData} />}
       {/* Add more authenticated components here */}
       <StatusBar status={status} style={{ marginTop: '20px' }} />
     </div>
