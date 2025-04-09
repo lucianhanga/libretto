@@ -60,7 +60,7 @@ const Authenticated = () => {
         setImageSrc={setImageSrc}
         setProgress={setProgress}
         isPulling={isPulling}
-        clearResults={clearResults} // Ensure this is passed
+        clearResults={clearResults} // Passed here
       />
       <SubmitButton
         imageSrc={imageSrc}
@@ -69,12 +69,12 @@ const Authenticated = () => {
         setIsPulling={setIsPulling}
         setResult={setResult}
         isPulling={isPulling}
-        clearResults={clearResults} // Ensure this is passed
+        clearResults={clearResults} // Passed here
       />
       <ProgressBar progress={progress} />
       <ParsedDataDisplay 
         result={result} 
-        clearResults={clearResults} 
+        clearResults={clearResults} // Passed here
         saved={saved} 
         setSaved={setSaved} 
       />

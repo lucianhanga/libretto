@@ -4,7 +4,7 @@ import PictureHolder from './PictureHolder';
 import PictureButtons from './PictureButtons';
 import './PictureControl.css';
 
-const PictureControl = ({ setImageSrc, setProgress, isPulling }) => {
+const PictureControl = ({ setImageSrc, setProgress, isPulling, clearResults }) => { // Add clearResults here
   const [isCameraOn, setIsCameraOn] = useState(false);
   const [imageSrc, setImageSrcState] = useState(null);
   const webcamRef = useRef(null);
@@ -57,6 +57,7 @@ const PictureControl = ({ setImageSrc, setProgress, isPulling }) => {
             onTakePicture={handleTakePicture}
             onLoadPictureClick={handleLoadPictureClick}
             isPulling={isPulling}
+            clearResults={clearResults} // Pass clearResults here
           />
           <input
             type="file"
