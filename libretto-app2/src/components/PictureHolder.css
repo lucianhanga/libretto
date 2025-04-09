@@ -4,12 +4,23 @@
   height: 300px;
   background-color: #e0e0e0;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  margin-bottom: 20px; /* Add spacing between the image and the buttons */
+  max-height: 300px; /* Limit the height of the image */
+  overflow: hidden; /* Prevent overflow */
   color: #888;
 }
 
 .captured-image {
   width: 100%;
-  max-width: 400px;
+  max-width: 100%; /* Ensure the image fits within the container */
+  max-height: 100%; /* Ensure the image does not exceed the container's height */
+  object-fit: contain; /* Maintain aspect ratio */
+}
+
+.image-placeholder {
+  font-size: 16px;
+  color: #aaa;
+  text-align: center;
 }

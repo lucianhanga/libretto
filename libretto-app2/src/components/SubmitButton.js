@@ -109,7 +109,6 @@ const SubmitButton = ({ imageSrc, setStatus, setProgress, setIsPulling, setResul
   const handleSubmit = async () => {
     try {
       clearResults(); // Clear the current results
-      const token = accessToken || await acquireToken();
       const requestBody = createRequestBody(imageSrc);
       await submitPhoto(requestBody);
     } catch (error) {

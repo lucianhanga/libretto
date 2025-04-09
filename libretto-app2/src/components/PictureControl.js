@@ -4,7 +4,7 @@ import PictureHolder from './PictureHolder';
 import PictureButtons from './PictureButtons';
 import './PictureControl.css';
 
-const PictureControl = ({ setImageSrc, setProgress, isPulling, clearResults }) => { // Add clearResults here
+const PictureControl = ({ setImageSrc, setProgress, isPulling, clearResults }) => {
   const [isCameraOn, setIsCameraOn] = useState(false);
   const [imageSrc, setImageSrcState] = useState(null);
   const webcamRef = useRef(null);

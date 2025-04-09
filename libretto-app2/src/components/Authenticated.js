@@ -4,6 +4,7 @@ import StatusBar from './StatusBar';
 import ProgressBar from './ProgressBar';
 import PictureControl from './PictureControl';
 import SubmitButton from './SubmitButton';
+import ResultsDisplay from './ResultsDisplay'; // Import the new component
 import useToken from '../hooks/useToken';
 
 const Authenticated = () => {
@@ -38,7 +39,7 @@ const Authenticated = () => {
         clearResults={clearResults} // Passed here
       />
       <ProgressBar progress={progress} />
-      {/* Add more authenticated components here */}
+      <ResultsDisplay results={result} /> {/* Add the new component */}
       <StatusBar status={status} style={{ marginTop: '20px' }} />
     </div>
   );
