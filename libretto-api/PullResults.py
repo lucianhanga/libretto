@@ -24,6 +24,9 @@ def PullResults(req: func.HttpRequest) -> func.HttpResponse:
             pass
         else:
             guid = req_body.get('guid')
+    
+    # temporary hardcoded GUID for testing
+    guid = "01ee3a3b-9f03-47b6-9b76-0ca94a948a03"
 
     if not guid:
         return func.HttpResponse(
@@ -51,11 +54,11 @@ def PullResults(req: func.HttpRequest) -> func.HttpResponse:
         # Convert the entity to JSON
         entity_json = json.dumps(entity, default=str)
         
-        try:
-            # Delete the entity from the table
-            table_client.delete_entity(partition_key="results", row_key=guid)
-        except Exception as delete_error:
-            logging.error(f"Error deleting entity: {delete_error}")
+        # try:
+        #     # Delete the entity from the table
+        #     table_client.delete_entity(partition_key="results", row_key=guid)
+        # except Exception as delete_error:
+        #     logging.error(f"Error deleting entity: {delete_error}")
         
         return func.HttpResponse(
             body=entity_json,
