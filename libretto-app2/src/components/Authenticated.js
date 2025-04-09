@@ -12,42 +12,11 @@ const Authenticated = () => {
   const [imageSrc, setImageSrc] = useState(null);
   const [isPulling, setIsPulling] = useState(false);
   const [result, setResult] = useState([]);
-  const [csvData, setCsvData] = useState('');
-  const [showCSV, setShowCSV] = useState(false);
-  const [saved, setSaved] = useState(false); // Track if data has been saved
 
   useToken(); // Use the custom hook to acquire the token
 
-  const handleShowCSV = () => {
-    if (showCSV) {
-      setShowCSV(false);
-    } else {
-      const data = localStorage.getItem("nameDisplayData") || '';
-      setCsvData(data);
-      setShowCSV(true);
-    }
-  };
-
-  const handleClearCSV = () => {
-    localStorage.removeItem("nameDisplayData");
-    setCsvData('');
-    setShowCSV(false);
-  };
-
-  const handleDownloadCSV = () => {
-    const data = localStorage.getItem("nameDisplayData") || '';
-    const blob = new Blob([data], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'data.csv';
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
   const clearResults = () => {
     setResult([]);
-    setSaved(false); // Clear the saved status
   };
 
   return (
